@@ -1,53 +1,44 @@
 package com.example.ttt.jukejam;
 
-
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.SearchView;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link PartyFragment#newInstance} factory method to
+ * Activities that contain this fragment must implement the
+
+ * to handle interaction events.
+ * Use the {@link SearchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PartyFragment extends Fragment {
+public class SearchFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private ListView listView;
+    private Search_Adapter adapter;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    private RecyclerView recyclerView;
-    private SearchView searchView;
-    private Button searchBtn;
-    private TextView partyNameTV;
 
-    private List<SongModel> myDataset;
-    private RecyclerView.Adapter myAdapter;
-    private RecyclerView.LayoutManager layoutManager;
-    public PartyFragment() {
+
+    public SearchFragment() {
         // Required empty public constructor
     }
 
@@ -57,11 +48,11 @@ public class PartyFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment PartyFragment.
+     * @return A new instance of fragment SearchFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PartyFragment newInstance(String param1, String param2) {
-        PartyFragment fragment = new PartyFragment();
+    public static SearchFragment newInstance(String param1, String param2) {
+        SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -72,42 +63,27 @@ public class PartyFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        adapter = new Search_Adapter(getContext(), (ArrayList<SongModel>)dummyData());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_party, container, false);
-        setupUI(rootView);
-        return rootView;
+        //String roomName = getArguments().getString("Room Name");
+        View v = inflater.inflate(R.layout.fragment_search, container, false);
+        listView = v.findViewById(R.id.searchLV);
+        listView.setAdapter(adapter);
+        return v;
     }
 
-    public void setupUI(View rootView){
-        recyclerView = rootView.findViewById(R.id.recyclerView);
-        partyNameTV = rootView.findViewById(R.id.partyNameTV);
-        searchView = rootView.findViewById(R.id.searchView);
-        searchBtn = rootView.findViewById((R.id.searchBtn));
-
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        myDataset = dummyData();
-        Log.d("PartyFragment", "setupUI: myDataset size = "+myDataset.size());
-        myAdapter = new PartyQueueRecyclerViewAdapter(myDataset,getContext());
-        recyclerView.setAdapter(myAdapter);
-    }
 
     private List<SongModel> dummyData(){
         List<SongModel> retVal = new ArrayList<SongModel>();
         SongModel s = new SongModel("Hey ya!","Outkast",null);
         for(int i=0;i<10;i++) s.upVote();
         retVal.add(s);
-        s = new SongModel("Never Gonna Give You Up","Rick Astley",null);
+        s = new SongModel("Broken Arrows","Avicii",null);
         for(int i=0;i<5;i++) s.upVote();
 
         retVal.add(s);
@@ -118,5 +94,4 @@ public class PartyFragment extends Fragment {
         Log.d("PartyFragment", "got here: dummyData: ");
         return  retVal;
     }
-
 }
