@@ -37,23 +37,7 @@ public class DJFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DJFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static DJFragment newInstance(String param1, String param2) {
-        DJFragment fragment = new DJFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +49,7 @@ public class DJFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        //String roomName = getArguments().getString("Room Name");
         View v = inflater.inflate(R.layout.fragment_dj, container, false);
         listView = v.findViewById(R.id.songRequestsLV);
         listView.setAdapter(adapter);
@@ -75,7 +60,7 @@ public class DJFragment extends Fragment {
         SongModel s = new SongModel("Hey ya!","Outkast",null);
         for(int i=0;i<10;i++) s.upVote();
         retVal.add(s);
-        s = new SongModel("Never Gonna Give You Up","Rick Astley",null);
+        s = new SongModel("Broken Arrows","Avicii",null);
         for(int i=0;i<5;i++) s.upVote();
 
         retVal.add(s);
