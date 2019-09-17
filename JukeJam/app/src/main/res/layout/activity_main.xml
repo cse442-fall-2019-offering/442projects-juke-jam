@@ -6,11 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <fragment
-        android:id="@+id/fragment"
-        android:name="com.example.ttt.jukejam.SearchFragment"
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="186dp"
-        tools:layout_editor_absoluteY="251dp" />
+         />
 </androidx.constraintlayout.widget.ConstraintLayout>
