@@ -6,9 +6,9 @@
         tools:context=".JoinPartyFragment">
 
         <!-- TODO: Update blank fragment layout -->
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="943dp">
 
             <TextView
                 android:id="@+id/textView"
@@ -34,7 +34,7 @@
                 tools:layout_editor_absoluteX="19dp"
                 tools:layout_editor_absoluteY="240dp" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         </FrameLayout>
 
