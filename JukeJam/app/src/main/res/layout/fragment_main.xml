@@ -6,13 +6,9 @@
     tools:context=".MainFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/createPartyBtn"
         android:layout_width="265dp"
         android:layout_height="70dp"
         android:layout_gravity="center"
@@ -20,7 +16,7 @@
         android:text="Create a Party" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/joinPartyBtn"
         android:layout_width="265dp"
         android:layout_height="70dp"
         android:layout_gravity="center"
