@@ -1,6 +1,7 @@
 package com.example.ttt.jukejam;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -83,11 +84,13 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("MainFragment", "got here create onClick ");
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                CreatePartyFragment newFrag = new CreatePartyFragment();
-                ft.replace(R.id.fragment_container,newFrag);
-                ft.commit();
+//                FragmentManager fm = getFragmentManager();
+//                FragmentTransaction ft = fm.beginTransaction();
+//                CreatePartyFragment newFrag = new CreatePartyFragment();
+//                ft.replace(R.id.fragment_container,newFrag);
+//                ft.commit();
+                Intent intent = new Intent(getActivity(),DJActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -96,11 +99,13 @@ public class MainFragment extends Fragment {
             public void onClick(View v) {
                 Log.d("MainFragment", "got here join onClick ");
 
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                JoinPartyFragment newFrag = new JoinPartyFragment();
-                ft.replace(R.id.fragment_container,newFrag);
-                ft.commit();
+//                FragmentManager fm = getFragmentManager();
+//                FragmentTransaction ft = fm.beginTransaction();
+//                JoinPartyFragment newFrag = new JoinPartyFragment();
+//                ft.replace(R.id.fragment_container,newFrag);
+//                ft.commit();
+                Intent intent = new Intent(getActivity(),GuestActivity.class);
+                startActivity(intent);
             }
         });
     }
