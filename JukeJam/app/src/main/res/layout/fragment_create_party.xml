@@ -5,8 +5,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreatePartyFragment"
-    android:background="@drawable/bg">
+    tools:context=".CreatePartyFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -33,20 +32,20 @@
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="167dp"
+            android:layout_width="199dp"
             android:layout_height="41dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
-            android:text="Create Party"
+            android:text="Create Party 2"
             android:textColor="@color/cardview_light_background"
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <CheckBox
             android:id="@+id/approveSongCheckBox"
