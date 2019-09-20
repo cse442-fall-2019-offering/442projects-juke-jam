@@ -3,9 +3,12 @@ package com.example.ttt.jukejam;
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
 /**
@@ -23,7 +26,7 @@ public class JoinPartyFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-
+    private Button joinRoomBtn;
     public JoinPartyFragment() {
         // Required empty public constructor
     }
@@ -59,7 +62,25 @@ public class JoinPartyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_join_party, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_join_party, container, false);
+        setupUI(rootView);
+        setupListeners();
+        return rootView;
+    }
+
+    public void setupUI(View rootView){
+        joinRoomBtn = rootView.findViewById(R.id.checkBox);
+    }
+    public void setupListeners(){
+        joinRoomBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PartyFragment partyFrag = new PartyFragment();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container_guest, partyFrag);
+                ft.commit();
+            }
+        });
     }
 
 }
