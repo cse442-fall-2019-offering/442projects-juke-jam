@@ -3,4 +3,6 @@
     <color name="colorPrimary">#880E4F</color>
     <color name="colorPrimaryDark">#560027</color>
     <color name="colorAccent">#DB4C40</color>
+    <color name="jukePurp">#7200ff</color>
+    <color name="black">#000000</color>
 </resources>
