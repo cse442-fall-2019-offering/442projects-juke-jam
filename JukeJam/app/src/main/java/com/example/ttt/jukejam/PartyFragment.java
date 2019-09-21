@@ -1,19 +1,32 @@
 package com.example.ttt.jukejam;
 
-import android.content.Context;
-import android.net.Uri;
+
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.SearchView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link PartyFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
  * Use the {@link PartyFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
@@ -27,8 +40,14 @@ public class PartyFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    private RecyclerView recyclerView;
+    private SearchView searchView;
+    private Button searchBtn;
+    private TextView partyNameTV;
 
+    private List<SongModel> myDataset;
+    private RecyclerView.Adapter myAdapter;
+    private RecyclerView.LayoutManager layoutManager;
     public PartyFragment() {
         // Required empty public constructor
     }
@@ -64,45 +83,52 @@ public class PartyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_party, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_party, container, false);
+        setupUI(rootView);
+        setupListeners();
+        return rootView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    public void setupUI(View rootView){
+        recyclerView = rootView.findViewById(R.id.recyclerView);
+        partyNameTV = rootView.findViewById(R.id.partyNameTV);
+        searchView = rootView.findViewById(R.id.searchView);
+        searchBtn = rootView.findViewById((R.id.searchBtn));
+
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        myDataset = dummyData();
+        Log.d("PartyFragment", "setupUI: myDataset size = "+myDataset.size());
+        myAdapter = new PartyQueueRecyclerViewAdapter(myDataset,getContext());
+        recyclerView.setAdapter(myAdapter);
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+    private List<SongModel> dummyData(){
+        List<SongModel> retVal = new ArrayList<SongModel>();
+        SongModel s = new SongModel("Hey ya!","Outkast",null);
+        for(int i=0;i<10;i++) s.upVote();
+        retVal.add(s);
+        s = new SongModel("Never Gonna Give You Up","Rick Astley",null);
+        for(int i=0;i<5;i++) s.upVote();
+
+        retVal.add(s);
+        s = new SongModel("All Star","Smash Mouth",null);
+        for(int i=0;i<3;i++) s.upVote();
+
+        retVal.add(s);
+        Log.d("PartyFragment", "got here: dummyData: ");
+        return  retVal;
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void setupListeners(){
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),SearchActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 }

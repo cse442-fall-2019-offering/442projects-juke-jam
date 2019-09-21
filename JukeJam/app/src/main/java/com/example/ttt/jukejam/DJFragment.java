@@ -1,24 +1,32 @@
 package com.example.ttt.jukejam;
 
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ListView;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link DJFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class DJFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private Song_Request_Adapeter adapter;
+    private ListView listView;
+    private ImageButton searchBtn;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -28,38 +36,53 @@ public class DJFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DJFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static DJFragment newInstance(String param1, String param2) {
-        DJFragment fragment = new DJFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        adapter = new Song_Request_Adapeter(getContext(), (ArrayList<SongModel>) dummyData());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dj, container, false);
+        View v = inflater.inflate(R.layout.fragment_dj, container, false);
+        listView = v.findViewById(R.id.songRequestsLV);
+        listView.setAdapter(adapter);
+        setupUI(v);
+        setupListeners();
+        return v;
+    }
+    private List<SongModel> dummyData(){
+        List<SongModel> retVal = new ArrayList<SongModel>();
+        SongModel s = new SongModel("Hey ya!","Outkast",null);
+        for(int i=0;i<10;i++) s.upVote();
+        retVal.add(s);
+        s = new SongModel("Broken Arrows","Avicii",null);
+        for(int i=0;i<5;i++) s.upVote();
+
+        retVal.add(s);
+        s = new SongModel("All Star","Smash Mouth",null);
+        for(int i=0;i<3;i++) s.upVote();
+
+        retVal.add(s);
+        Log.d("PartyFragment", "got here: dummyData: ");
+        return  retVal;
+    }
+
+    public void setupUI(View rootVeiw){
+        searchBtn = rootVeiw.findViewById(R.id.searchButton);
+    }
+    public void setupListeners(){
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),SearchActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 }

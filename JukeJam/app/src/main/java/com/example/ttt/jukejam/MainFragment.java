@@ -1,11 +1,17 @@
 package com.example.ttt.jukejam;
 
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
 /**
@@ -23,7 +29,8 @@ public class MainFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-
+    private Button createPartyBtn;
+    private Button joinPartyBtn;
     public MainFragment() {
         // Required empty public constructor
     }
@@ -53,13 +60,54 @@ public class MainFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        setupUI(rootView);
+        setupListeners();
+        return rootView;
+    }
+
+    public void setupUI(View rootView){
+        createPartyBtn = rootView.findViewById(R.id.createPartyBtn);
+        joinPartyBtn = rootView.findViewById(R.id.joinPartyBtn);
+    }
+
+    public void setupListeners(){
+        createPartyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("MainFragment", "got here create onClick ");
+//                FragmentManager fm = getFragmentManager();
+//                FragmentTransaction ft = fm.beginTransaction();
+//                CreatePartyFragment newFrag = new CreatePartyFragment();
+//                ft.replace(R.id.fragment_container,newFrag);
+//                ft.commit();
+                Intent intent = new Intent(getActivity(),DJActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        joinPartyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("MainFragment", "got here join onClick ");
+
+//                FragmentManager fm = getFragmentManager();
+//                FragmentTransaction ft = fm.beginTransaction();
+//                JoinPartyFragment newFrag = new JoinPartyFragment();
+//                ft.replace(R.id.fragment_container,newFrag);
+//                ft.commit();
+                Intent intent = new Intent(getActivity(),GuestActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 }
