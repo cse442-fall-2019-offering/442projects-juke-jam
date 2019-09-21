@@ -69,7 +69,7 @@ public class JoinPartyFragment extends Fragment {
     }
 
     public void setupUI(View rootView){
-        joinRoomBtn = rootView.findViewById(R.id.checkBox);
+        joinRoomBtn = rootView.findViewById(R.id.joinRoomBtn);
     }
     public void setupListeners(){
         joinRoomBtn.setOnClickListener(new View.OnClickListener() {
