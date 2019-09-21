@@ -1,6 +1,7 @@
 package com.example.ttt.jukejam;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -84,6 +85,7 @@ public class PartyFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_party, container, false);
         setupUI(rootView);
+        setupListeners();
         return rootView;
     }
 
@@ -117,6 +119,16 @@ public class PartyFragment extends Fragment {
         retVal.add(s);
         Log.d("PartyFragment", "got here: dummyData: ");
         return  retVal;
+    }
+
+    public void setupListeners(){
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),SearchActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 }
