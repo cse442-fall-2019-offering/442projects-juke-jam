@@ -13,6 +13,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -51,6 +54,9 @@ public class DJFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_dj, container, false);
         listView = v.findViewById(R.id.songRequestsLV);
         listView.setAdapter(adapter);
+        String Name = getArguments().getString("Name");
+        TextView roomNameTV = (TextView) v.findViewById(R.id.roomName);
+        roomNameTV.setText(Name);
         setupUI(v);
         setupListeners();
         return v;
