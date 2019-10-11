@@ -34,7 +34,7 @@ public class MainActivity extends FragmentActivity implements
     private static final String REDIRECT_URI = "https://example.com";
 
     private Player mPlayer;
-
+    private static final int REQUEST_CODE = 1337;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,15 +43,40 @@ public class MainActivity extends FragmentActivity implements
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container,mainFrag);
         ft.commit();
+        AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
+        builder.setScopes(new String[]{"user-read-private", "streaming"});
+        AuthenticationRequest request = builder.build();
+
+        AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
+        if (requestCode == REQUEST_CODE) {
+            AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
+            if (response.getType() == AuthenticationResponse.Type.TOKEN) {
+                Config playerConfig = new Config(this, response.getAccessToken(), CLIENT_ID);
+                Spotify.getPlayer(playerConfig, this, new SpotifyPlayer.InitializationObserver() {
+                    @Override
+                    public void onInitialized(SpotifyPlayer spotifyPlayer) {
+                        mPlayer = spotifyPlayer;
+                        mPlayer.addConnectionStateCallback(MainActivity.this);
+                        mPlayer.addNotificationCallback(MainActivity.this);
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        Log.e("MainActivity", "Could not initialize player: " + throwable.getMessage());
+                    }
+                });
+            }
+        }
     }
 
     @Override
     protected void onDestroy() {
+        Spotify.destroyPlayer(this);
         super.onDestroy();
     }
 
