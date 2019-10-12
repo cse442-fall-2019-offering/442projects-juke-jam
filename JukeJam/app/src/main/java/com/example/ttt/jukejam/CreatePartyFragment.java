@@ -8,7 +8,10 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 
 
 /**
@@ -78,6 +81,14 @@ public class CreatePartyFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 DJFragment djFrag = new DJFragment();
+                DAL dal = new DAL();
+                EditText partyNameET = getActivity().findViewById(R.id.partyName);
+                EditText partyCodeET = getActivity().findViewById(R.id.partyCodeField);
+                dal.createRoom(partyNameET.getText().toString(),partyCodeET.getText().toString());
+                Bundle b = new Bundle();
+                b.putString("Name",partyNameET.getText().toString());
+                b.putString("Join Code", partyCodeET.getText().toString());
+                djFrag.setArguments(b);
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_container_dj, djFrag);
                 ft.commit();
