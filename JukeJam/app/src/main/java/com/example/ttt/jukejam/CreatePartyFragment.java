@@ -1,6 +1,8 @@
 package com.example.ttt.jukejam;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -92,6 +94,12 @@ public class CreatePartyFragment extends Fragment {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_container_dj, djFrag);
                 ft.commit();
+
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getString(R.string.Saved_State_Values), Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(getString(R.string.Saved_State_Join_Code), partyCodeET.getText().toString());
+                editor.putBoolean(getString(R.string.Saved_State_Is_DJ), true);
+                editor.commit();
             }
         });
     }
