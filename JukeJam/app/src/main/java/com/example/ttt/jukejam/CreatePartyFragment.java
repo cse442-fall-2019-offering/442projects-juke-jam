@@ -14,6 +14,7 @@ import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.Space;
 
 
 /**
@@ -26,7 +27,8 @@ public class CreatePartyFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    public static final String ROOM_NAME = "Room Name";
+    public static final String JOIN_CODE = "Join Code";
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -88,18 +90,14 @@ public class CreatePartyFragment extends Fragment {
                 EditText partyCodeET = getActivity().findViewById(R.id.partyCodeField);
                 dal.createRoom(partyNameET.getText().toString(),partyCodeET.getText().toString());
                 Bundle b = new Bundle();
-                b.putString("Name",partyNameET.getText().toString());
-                b.putString("Join Code", partyCodeET.getText().toString());
+                b.putString(ROOM_NAME,partyNameET.getText().toString());
+                b.putString(JOIN_CODE, partyCodeET.getText().toString());
                 djFrag.setArguments(b);
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_container_dj, djFrag);
                 ft.commit();
-
-                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getString(R.string.Saved_State_Values), Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(getString(R.string.Saved_State_Join_Code), partyCodeET.getText().toString());
-                editor.putBoolean(getString(R.string.Saved_State_Is_DJ), true);
-                editor.commit();
+                SPAL spal = new SPAL(getActivity());
+                spal.writeSharedPrefrences(partyCodeET.getText().toString(),true,partyNameET.getText().toString());
             }
         });
     }

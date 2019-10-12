@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,11 +18,29 @@ public class GuestActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle bundle = getIntent().getExtras();
         setContentView(R.layout.activity_guest);
-        JoinPartyFragment joinPartyFrag = new JoinPartyFragment();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_container_guest,joinPartyFrag);
-        ft.commit();
+        if(bundle !=null){
+
+            if(bundle.getBoolean(getString(R.string.Join_Room_Extra),false)){
+                Log.d("GuestActivity", "created party frag");
+                PartyFragment partyFragment = new PartyFragment();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container_guest,partyFragment);
+                ft.commit();
+            }
+            else{
+                Log.d("GuestActivity", "join party frag created");
+                JoinPartyFragment joinPartyFrag = new JoinPartyFragment();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container_guest,joinPartyFrag);
+                ft.commit();
+            }
+
+        }
+
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -34,10 +53,8 @@ public class GuestActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.leaveParty:
-                SharedPreferences sharedPref = getSharedPreferences(getString(R.string.Saved_State_Values), Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.clear();
-                editor.commit();
+                SPAL spal = new SPAL(this);
+                spal.clearSharedPrefrences();
                 Intent intent = new Intent(this,MainActivity.class);
                 startActivity(intent);
                 return true;

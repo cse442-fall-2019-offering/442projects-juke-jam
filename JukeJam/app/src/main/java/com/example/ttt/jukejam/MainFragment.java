@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 /**
@@ -89,7 +90,15 @@ public class MainFragment extends Fragment {
 //                CreatePartyFragment newFrag = new CreatePartyFragment();
 //                ft.replace(R.id.fragment_container,newFrag);
 //                ft.commit();
+                SPAL spal = new SPAL(getActivity());
+                if(spal.inRoom() && !spal.getIsDj()){
+                    Toast.makeText(getContext(), "must leave party before creating one", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(spal.inRoom()) spal.joinRoom();
                 Intent intent = new Intent(getActivity(),DJActivity.class);
+                intent.putExtra(getString(R.string.Join_Room_Extra),false);
+                Log.v("MainFragment","didn't join room");
                 startActivity(intent);
             }
         });
@@ -104,7 +113,16 @@ public class MainFragment extends Fragment {
 //                JoinPartyFragment newFrag = new JoinPartyFragment();
 //                ft.replace(R.id.fragment_container,newFrag);
 //                ft.commit();
+                SPAL spal = new SPAL(getActivity());
+                if(spal.inRoom() && spal.getIsDj()){
+                    Toast.makeText(getContext(), "must end party before joining a different one", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                if(spal.inRoom()) spal.joinRoom();
                 Intent intent = new Intent(getActivity(),GuestActivity.class);
+                intent.putExtra(getString(R.string.Join_Room_Extra),false);
+                Log.v("MainFragment","didn't join room");
                 startActivity(intent);
             }
         });

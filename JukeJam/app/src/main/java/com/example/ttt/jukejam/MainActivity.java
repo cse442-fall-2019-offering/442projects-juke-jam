@@ -20,18 +20,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.Saved_State_Values), Context.MODE_PRIVATE);
-        String joinCode = sharedPreferences.getString(getString(R.string.Saved_State_Join_Code),null);
-        boolean isDJ = sharedPreferences.getBoolean(getString(R.string.Saved_State_Is_DJ),false);
-        if(joinCode != null && isDJ){
-            Intent i = new Intent(this, DJActivity.class);
-            startActivity(i);
+        SPAL spal = new SPAL(this);
+        if(spal.inRoom()){
+            spal.joinRoom();
         }
-        else if(joinCode != null && !isDJ){
-            Intent i = new Intent(this, GuestActivity.class);
-            startActivity(i);
-        }
-
         setContentView(R.layout.activity_main);
         MainFragment mainFrag = new MainFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

@@ -17,13 +17,27 @@ public class DJActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dj);
-        CreatePartyFragment creatPartyFrag = new CreatePartyFragment();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_container_dj, creatPartyFrag);
-        ft.commit();
 
-
+        Intent i = getIntent();
+        Bundle bundle = i.getExtras();
+        if(bundle != null){
+            setContentView(R.layout.activity_dj);
+            if(bundle.getBoolean(getString(R.string.Join_Room_Extra))){
+                DJFragment djFragment = new DJFragment();
+                SPAL spal = new SPAL(this);
+                Bundle b = spal.getBundle();
+                djFragment.setArguments(b);
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container_dj, djFragment);
+                ft.commit();
+            }
+            else{
+                CreatePartyFragment creatPartyFrag = new CreatePartyFragment();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container_dj, creatPartyFrag);
+                ft.commit();
+            }
+        }
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -39,10 +53,8 @@ public class DJActivity extends AppCompatActivity {
                 return true;
             case R.id.closeParty:
                 //TODO: remove room from database
-                SharedPreferences sharedPref = getSharedPreferences(getString(R.string.Saved_State_Values),Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.clear();
-                editor.commit();
+                SPAL spal = new SPAL(this);
+                spal.clearSharedPrefrences();
                 Intent intent = new Intent(this,MainActivity.class);
                 startActivity(intent);
                 return true;
