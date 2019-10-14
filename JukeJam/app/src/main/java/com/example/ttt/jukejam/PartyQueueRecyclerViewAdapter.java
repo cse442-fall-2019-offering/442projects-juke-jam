@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class PartyQueueRecyclerViewAdapter extends RecyclerView.Adapter<PartyQue
         return dataset.size();
     }
 
-    public static class PartyQueueHolder extends RecyclerView.ViewHolder{
+    public class PartyQueueHolder extends RecyclerView.ViewHolder{
         private TextView titleTV;
         private TextView artistTV;
         private TextView upvoteCountTV;
@@ -62,6 +63,20 @@ public class PartyQueueRecyclerViewAdapter extends RecyclerView.Adapter<PartyQue
             upvoteBtn = itemView.findViewById(R.id.upvoteBtn);
             downvoteBtn = itemView.findViewById(R.id.downvoteBtn);
             upvoteCountTV = itemView.findViewById(R.id.upvoteCountTV);
+
+            upvoteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    upvoteCountTV.setText(String.valueOf(Integer.valueOf(upvoteCountTV.getText().toString())+1));
+                }
+            });
+
+            downvoteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    upvoteCountTV.setText(String.valueOf(Integer.valueOf(upvoteCountTV.getText().toString())-1));
+                }
+            });
         }
     }
 
