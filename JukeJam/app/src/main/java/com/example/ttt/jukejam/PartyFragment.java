@@ -20,9 +20,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.PriorityQueue;
 
 
 /**
@@ -98,9 +100,12 @@ public class PartyFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        myDataset = dummyData();
-        Log.d("PartyFragment", "setupUI: myDataset size = "+myDataset.size());
-        myAdapter = new PartyQueueRecyclerViewAdapter(myDataset,getContext());
+        //myDataset = dummyData();
+        //Log.d("PartyFragment", "setupUI: myDataset size = "+myDataset.size());
+        //PriorityQueue<SongModel> tempQueue = new PriorityQueue<SongModel>(Queue.songQueue);
+        //tempQueue = Queue.songQueue;
+        Collections.sort(Queue.songQueue,new SongComparator());
+        myAdapter = new PartyQueueRecyclerViewAdapter(Queue.songQueue,getContext());
         recyclerView.setAdapter(myAdapter);
     }
 

@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout fragment_container;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Queue creation = new Queue();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         MainFragment mainFrag = new MainFragment();

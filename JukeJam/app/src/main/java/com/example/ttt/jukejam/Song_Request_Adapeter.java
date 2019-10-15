@@ -41,6 +41,7 @@ public class Song_Request_Adapeter extends ArrayAdapter<SongModel> {
                 final String tag = (String) view.getTag();
                 Toast.makeText(getContext(), request.getTitle()+"Added", Toast.LENGTH_LONG).show();
                 Song_Request_Adapeter.this.remove(getItem(position));
+                Queue.addSongToSongQueue(request);
             }
         };
         View.OnClickListener removeSong = new View.OnClickListener(){
@@ -48,6 +49,7 @@ public class Song_Request_Adapeter extends ArrayAdapter<SongModel> {
             public void onClick(View view){
                 Toast.makeText(getContext(), request.getTitle()+"Removed", Toast.LENGTH_LONG).show();
                 Song_Request_Adapeter.this.remove(getItem(position));
+                Queue.removeSongFromApprovalQueue(request);
             }
         };
         ImageButton addSongIB = listItemView.findViewById(R.id.addSong);

@@ -28,4 +28,6 @@ public class SongModel {
     public void upVote(){
         upVotes++;
     }
+
+    public void downVote(){ upVotes--; }
 }

@@ -67,6 +67,11 @@ public class PartyQueueRecyclerViewAdapter extends RecyclerView.Adapter<PartyQue
             upvoteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    String title = (String) titleTV.getText();
+                    String artist = (String) artistTV.getText();
+                    SongModel upvotedSong = Queue.findSongInQueue(title, artist, Queue.songQueue);
+                    upvotedSong.upVote();
+                    //redraw fragment
                     upvoteCountTV.setText(String.valueOf(Integer.valueOf(upvoteCountTV.getText().toString())+1));
                 }
             });
@@ -74,6 +79,11 @@ public class PartyQueueRecyclerViewAdapter extends RecyclerView.Adapter<PartyQue
             downvoteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    String title = (String) titleTV.getText();
+                    String artist = (String) artistTV.getText();
+                    SongModel downvotedSong = Queue.findSongInQueue(title, artist, Queue.songQueue);
+                    downvotedSong.downVote();
+                    //redraw fragment
                     upvoteCountTV.setText(String.valueOf(Integer.valueOf(upvoteCountTV.getText().toString())-1));
                 }
             });

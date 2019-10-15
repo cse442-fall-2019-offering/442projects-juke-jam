@@ -19,6 +19,7 @@ import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -44,7 +45,8 @@ public class DJFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter = new Song_Request_Adapeter(getContext(), (ArrayList<SongModel>) dummyData());
+        Collections.sort(Queue.approvalQueue, new SongComparator());
+        adapter = new Song_Request_Adapeter(getContext(), Queue.approvalQueue);
     }
 
     @Override
