@@ -15,6 +15,7 @@ public class DAL {
     public static final String DAL_Artist_Map_Key = "Artist";
     public static final String DAL_Song_Name_Map_Key = "Song_Name";
     public static final String DAL_URI_Map_Key = "URI";
+    public static String hashedCode;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -23,11 +24,15 @@ public class DAL {
     }
 
     public void createRoom(String name, String joinCode){
-        Map<String, Object> room = new HashMap<>();
-        room.put(DAL_Join_Code_Field, joinCode);
-        room.put(DAL_Room_Name_Field, name);
+        hashedCode = ""+joinCode.hashCode();
+        FirebaseCommunicator.setRoomCode(joinCode);
+        FirebaseCommunicator.setRoomName(name);
+        //Map<String, Object> room = new HashMap<>();
+        //room.put(DAL_Join_Code_Field, joinCode);
+        //room.put(DAL_Room_Name_Field, name);
         //ArrayList<Map<String,String>>  songs = new ArrayList<>();
         //room.put(DAL_Song_Name_Map_Key,songs);
+        Room room = new Room(joinCode, name, Queue.songQueue);
         db.collection(DAL_Rooms).document(""+joinCode.hashCode()).set(room);
     }
 

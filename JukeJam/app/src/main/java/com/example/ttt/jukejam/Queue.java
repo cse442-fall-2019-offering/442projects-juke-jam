@@ -1,6 +1,7 @@
 package com.example.ttt.jukejam;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -15,13 +16,13 @@ public class Queue {
     public Queue(){
         SongModel s = new SongModel("Hey ya!","Outkast",null);
         for(int i=0;i<10;i++) s.upVote();
-        songQueue.add(s);
-        //approvalQueue.add(s);
+        //songQueue.add(s);
+        approvalQueue.add(s);
 
         s = new SongModel("Never Gonna Give You Up","Rick Astley",null);
         for(int i=0;i<15;i++) s.upVote();
-        songQueue.add(s);
-        //approvalQueue.add(s);
+        //songQueue.add(s);
+        approvalQueue.add(s);
 
         s = new SongModel("All Star","Smash Mouth",null);
         for(int i=0;i<3;i++) s.upVote();
@@ -52,6 +53,18 @@ public class Queue {
 
     public static void removeSongFromApprovalQueue(SongModel song){
         approvalQueue.remove(song);
+    }
+
+    public static ArrayList<SongModel> hashMapToQueue(ArrayList<HashMap> tempArray){
+        ArrayList<SongModel> futueQueue = new ArrayList<SongModel>();
+
+        for(int i = 0; i<tempArray.size(); i++) {
+            SongModel s = new SongModel(tempArray.get(i).get("title").toString(), tempArray.get(i).get("artist").toString(), null);
+            s.setUpVotes(Integer.parseInt(tempArray.get(i).get("upVotes").toString()));
+            futueQueue.add(s);
+        }
+
+        return futueQueue;
     }
 
 }

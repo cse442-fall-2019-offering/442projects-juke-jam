@@ -3,8 +3,8 @@ package com.example.ttt.jukejam;
 import java.util.List;
 
 public class Room {
-    private String joinCode, roomName;
-    private List<SongModel> songs;
+    public String joinCode, roomName;
+    public List<SongModel> songs;
 
     public Room(){
     }

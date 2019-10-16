@@ -9,6 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 /**
@@ -75,6 +79,19 @@ public class JoinPartyFragment extends Fragment {
         joinRoomBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EditText partyCode = getActivity().findViewById(R.id.partyName);
+                String joinCode = partyCode.getText().toString();
+                FirebaseCommunicator.listenToDocument(""+joinCode.hashCode());
+
+                try
+                {
+                    Thread.sleep(5000);
+                }
+                catch(InterruptedException ex)
+                {
+                    Thread.currentThread().interrupt();
+                }
+
                 PartyFragment partyFrag = new PartyFragment();
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_container_guest, partyFrag);

@@ -72,6 +72,7 @@ public class PartyQueueRecyclerViewAdapter extends RecyclerView.Adapter<PartyQue
                     SongModel upvotedSong = Queue.findSongInQueue(title, artist, Queue.songQueue);
                     upvotedSong.upVote();
                     //redraw fragment
+                    FirebaseCommunicator.sendData();
                     upvoteCountTV.setText(String.valueOf(Integer.valueOf(upvoteCountTV.getText().toString())+1));
                 }
             });
