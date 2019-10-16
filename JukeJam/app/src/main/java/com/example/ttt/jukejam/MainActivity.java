@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProviders;
 
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
@@ -77,7 +79,10 @@ public class MainActivity extends FragmentActivity implements
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
             if (response.getType() == AuthenticationResponse.Type.TOKEN) {
                 ACCESS_TOKEN = response.getAccessToken();
+                SpotifyViewModel model = ViewModelProviders.of(this).get(SpotifyViewModel.class);
+
                 Log.d("Token: ", ACCESS_TOKEN);
+                model.setToken(ACCESS_TOKEN);
                 Config playerConfig = new Config(this, response.getAccessToken(), CLIENT_ID);
                 Spotify.getPlayer(playerConfig, this, new SpotifyPlayer.InitializationObserver() {
                     @Override
