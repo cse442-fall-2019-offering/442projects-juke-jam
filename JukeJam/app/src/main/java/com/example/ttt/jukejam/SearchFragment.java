@@ -24,6 +24,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -107,9 +108,13 @@ public class SearchFragment extends Fragment {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<SongModel> searchResults = extractSearchQueryResults(runSearchQuery(searchET.getText().toString()));
+                Log.d("SearchActivity", "SearchBtn onClick: ");
+                String searchResultsString = "";//runSearchQuery(searchET.getText().toString());
+                List<SongModel> searchResults = extractSearchQueryResults(searchResultsString);
+                Log.d("SearchActivity", "onClick: searchResults.size = "+searchResults.size());
                 adapter = new Search_Adapter(getContext(), (ArrayList<SongModel>)searchResults);
                 listView.setAdapter(adapter);
+                listView.invalidate();
 
 
             }
@@ -169,13 +174,49 @@ public class SearchFragment extends Fragment {
                 }
             }
         });
-        return retVal;
+        //TESTING
+        //return retVal;
+        return "";
     }
 
     public List<SongModel> extractSearchQueryResults(String jsonString){
+        List<SongModel> retVal = new ArrayList<SongModel>();
+        Log.d("SearchActivity", "extractSearchQueryResults: got here");
+        //TESTING
+        jsonString = loadFromJson();
+        //TESTING
         Map map = new Gson().fromJson(jsonString, Map.class);
         Log.d("SearchActivity", "Map: "+map.toString());
+        Map tracks = (Map)(map.get("tracks"));
+        ArrayList<Map> items = (ArrayList<Map>) tracks.get("items");
+        for(Map track: items){
+            String name = (String)track.get("name");
+            //ArrayList<Map> artists = (ArrayList<Map>) track.get("artist");
+            String artist = (String)((ArrayList<Map>)(track.get("artists"))).get(0).get("name");
+            String uri = (String)track.get("uri");
 
-        return null;
+            SongModel model = new SongModel(name,artist,uri);
+            retVal.add(model);
+            Log.d("SearchActivity", "extractSearchQueryResults: added song: "+name+" by "+" uri: "+uri);
+        }
+        Log.d("SearchActivity", "tracks: "+tracks);
+
+        return retVal;
+    }
+
+    public String loadFromJson(){
+        String json;
+        try{
+            InputStream is = getActivity().getAssets().open("heyya.json");
+            byte[] buffer = new byte[is.available()];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer,"UTF-8");
+        }
+        catch(IOException e){
+            e.printStackTrace();
+            return null;
+        }
+        return json;
     }
 }
