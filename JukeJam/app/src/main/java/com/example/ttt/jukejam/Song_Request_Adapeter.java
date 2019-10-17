@@ -49,7 +49,7 @@ public class Song_Request_Adapeter extends ArrayAdapter<SongModel> {
 
                 //String joinCode = "1234";
                 //String roomName = "aiden";
-                FirebaseCommunicator.sendData();
+                FirebaseCommunicator.sendData(Queue.approvalQueue);
 
                 //FirebaseFirestore db = FirebaseFirestore.getInstance();
                 //Room room = new Room(joinCode, roomName, Queue.songQueue);

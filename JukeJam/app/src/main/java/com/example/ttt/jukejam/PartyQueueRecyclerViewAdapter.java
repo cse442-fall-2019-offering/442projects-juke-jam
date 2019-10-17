@@ -69,10 +69,10 @@ public class PartyQueueRecyclerViewAdapter extends RecyclerView.Adapter<PartyQue
                 public void onClick(View view) {
                     String title = (String) titleTV.getText();
                     String artist = (String) artistTV.getText();
-                    SongModel upvotedSong = Queue.findSongInQueue(title, artist, Queue.songQueue);
+                    SongModel upvotedSong = Queue.findSongInQueue(title, artist, Queue.approvalQueue);
                     upvotedSong.upVote();
                     //redraw fragment
-                    FirebaseCommunicator.sendData();
+                    FirebaseCommunicator.sendData(Queue.approvalQueue);
                     upvoteCountTV.setText(String.valueOf(Integer.valueOf(upvoteCountTV.getText().toString())+1));
                 }
             });
@@ -82,9 +82,10 @@ public class PartyQueueRecyclerViewAdapter extends RecyclerView.Adapter<PartyQue
                 public void onClick(View view) {
                     String title = (String) titleTV.getText();
                     String artist = (String) artistTV.getText();
-                    SongModel downvotedSong = Queue.findSongInQueue(title, artist, Queue.songQueue);
+                    SongModel downvotedSong = Queue.findSongInQueue(title, artist, Queue.approvalQueue);
                     downvotedSong.downVote();
                     //redraw fragment
+                    FirebaseCommunicator.sendData(Queue.approvalQueue);
                     upvoteCountTV.setText(String.valueOf(Integer.valueOf(upvoteCountTV.getText().toString())-1));
                 }
             });

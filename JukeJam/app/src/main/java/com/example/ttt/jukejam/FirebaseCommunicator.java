@@ -46,7 +46,7 @@ public class FirebaseCommunicator {
                 setRoomCode(snapshot.get("joinCode").toString());
                 setRoomName(snapshot.get("roomName").toString());
                 ArrayList<HashMap> temp= (ArrayList<HashMap>) snapshot.get("songs");
-                Queue.songQueue = Queue.hashMapToQueue(temp);
+                Queue.approvalQueue = Queue.hashMapToQueue(temp);
                 //Queue.songQueue = (ArrayList<SongModel>) room.songs;
                 //} else {
                 //    Log.d("DataFetch", "Current data: null");
@@ -57,8 +57,8 @@ public class FirebaseCommunicator {
         // [END listen_document]
     }
 
-    public static void sendData(){
-        Room room = new Room(roomCode, roomName, Queue.songQueue);
+    public static void sendData(ArrayList<SongModel> tempArray){
+        Room room = new Room(roomCode, roomName, tempArray);
         db.collection("rooms").document(""+roomCode.hashCode()).set(room);
     }
 

@@ -105,7 +105,7 @@ public class PartyFragment extends Fragment {
         //PriorityQueue<SongModel> tempQueue = new PriorityQueue<SongModel>(Queue.songQueue);
         //tempQueue = Queue.songQueue;
         Collections.sort(Queue.songQueue,new SongComparator());
-        myAdapter = new PartyQueueRecyclerViewAdapter(Queue.songQueue,getContext());
+        myAdapter = new PartyQueueRecyclerViewAdapter(Queue.approvalQueue,getContext());
         recyclerView.setAdapter(myAdapter);
     }
 
