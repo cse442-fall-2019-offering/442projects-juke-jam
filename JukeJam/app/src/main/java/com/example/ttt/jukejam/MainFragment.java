@@ -92,13 +92,16 @@ public class MainFragment extends Fragment {
 //                ft.commit();
                 SPAL spal = new SPAL(getActivity());
                 if(spal.inRoom() && !spal.getIsDj()){
-                    Toast.makeText(getContext(), "must leave party before creating one", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "You must leave party before creating one", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if(spal.inRoom()) spal.joinRoom();
+                if(spal.inRoom()){
+                    spal.joinRoom();
+                    return;
+                }
                 Intent intent = new Intent(getActivity(),DJActivity.class);
                 intent.putExtra(getString(R.string.Join_Room_Extra),false);
-                Log.v("MainFragment","didn't join room");
+                Log.d("JJDEBUGMainFragment","didn't join room");
                 startActivity(intent);
             }
         });
@@ -115,14 +118,17 @@ public class MainFragment extends Fragment {
 //                ft.commit();
                 SPAL spal = new SPAL(getActivity());
                 if(spal.inRoom() && spal.getIsDj()){
-                    Toast.makeText(getContext(), "must end party before joining a different one", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "You must end party before joining a different one", Toast.LENGTH_LONG).show();
                     return;
                 }
 
-                if(spal.inRoom()) spal.joinRoom();
+                if(spal.inRoom()) {
+                    spal.joinRoom();
+                    return;
+                }
                 Intent intent = new Intent(getActivity(),GuestActivity.class);
                 intent.putExtra(getString(R.string.Join_Room_Extra),false);
-                Log.v("MainFragment","didn't join room");
+                Log.d("JJDEBUGMainFragment","didn't join room");
                 startActivity(intent);
             }
         });

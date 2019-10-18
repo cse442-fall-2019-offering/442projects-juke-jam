@@ -24,14 +24,14 @@ public class GuestActivity extends AppCompatActivity {
         if(bundle !=null){
 
             if(bundle.getBoolean(getString(R.string.Join_Room_Extra),false)){
-                Log.d("GuestActivity", "created party frag");
+                Log.d("JJDEBUGGuestActivity", "created party frag");
                 PartyFragment partyFragment = new PartyFragment();
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_container_guest,partyFragment);
                 ft.commit();
             }
             else{
-                Log.d("GuestActivity", "join party frag created");
+                Log.d("JJDEBUGGuestActivity", "join party frag created");
                 JoinPartyFragment joinPartyFrag = new JoinPartyFragment();
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_container_guest,joinPartyFrag);

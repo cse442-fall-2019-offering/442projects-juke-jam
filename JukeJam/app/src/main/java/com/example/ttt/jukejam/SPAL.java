@@ -31,7 +31,7 @@ public class SPAL {
 
     public void joinRoom(){
         boolean isDJ = sharedPreferences.getBoolean(activity.getString(R.string.Saved_State_Is_DJ),false);
-        Log.d("SPAL","JOINING ROOM");
+        Log.d("JJDEBUGSPAL","JOINING ROOM");
         if(isDJ){
             Intent i = new Intent(activity, DJActivity.class);
             //true indicates they are in a room
@@ -41,7 +41,7 @@ public class SPAL {
         else{
             Intent i = new Intent(activity, GuestActivity.class);
             //true indicates they are in a room
-            Log.d("SPAL","put extra");
+            Log.d("JJDEBUGSPAL","put extra");
             i.putExtra(activity.getString(R.string.Join_Room_Extra),true);
             activity.startActivity(i);
         }
