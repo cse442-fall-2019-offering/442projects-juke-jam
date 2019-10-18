@@ -86,6 +86,7 @@ public class PartyFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_party, container, false);
         setupUI(rootView);
         setupListeners();
+        //TODO: need to querey data base to get the party name
         return rootView;
     }
 

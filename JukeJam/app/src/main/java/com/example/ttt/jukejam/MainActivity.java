@@ -7,9 +7,13 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import androidx.fragment.app.FragmentActivity;
@@ -60,6 +64,11 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SPAL spal = new SPAL(this);
+        if(spal.inRoom()){
+            spal.joinRoom();
+        }
         setContentView(R.layout.activity_main);
         MainFragment mainFrag = new MainFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
