@@ -4,9 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -15,6 +19,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SPAL spal = new SPAL(this);
+        if(spal.inRoom()){
+            spal.joinRoom();
+        }
         setContentView(R.layout.activity_main);
         MainFragment mainFrag = new MainFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -29,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
        // setupUI(rootView);
         return rootView;
     }
+
+
 
     public void setupUI(View rootView){
         //fragment_container = findViewById(R.id.fragment_container);
