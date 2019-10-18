@@ -19,6 +19,7 @@ import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.example.ttt.jukejam.CreatePartyFragment.ROOM_NAME;
@@ -29,8 +30,8 @@ public class DJFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private Song_Request_Adapeter adapter;
-    private ListView listView;
+    private static Song_Request_Adapeter adapter;
+    private static ListView listView;
     private ImageButton searchBtn;
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -46,7 +47,17 @@ public class DJFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter = new Song_Request_Adapeter(getContext(), (ArrayList<SongModel>) dummyData());
+        FirebaseCommunicator.DJListener(DAL.hashedCode);
+        try
+        {
+            Thread.sleep(3000);
+        }
+        catch(InterruptedException ex)
+        {
+            Thread.currentThread().interrupt();
+        }
+        Song_Request_Adapeter.reAssignAndSortData();
+        adapter = new Song_Request_Adapeter(getContext(), Queue.approvalQueue);
     }
 
     @Override
@@ -91,6 +102,16 @@ public class DJFragment extends Fragment {
                 startActivity(intent);
             }
         });
+    }
+    public static void  updateData() {
+        adapter.clear();
+        ArrayList<SongModel> tempArray = new ArrayList<SongModel>(Queue.approvalQueue);
+        Collections.sort(tempArray, new SongComparator());
+        adapter.addAll(tempArray);
+        listView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+
     }
 
 }

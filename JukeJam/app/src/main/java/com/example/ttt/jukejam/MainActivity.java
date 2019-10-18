@@ -63,6 +63,7 @@ public class MainActivity extends FragmentActivity implements
     private String ACCESS_TOKEN;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Queue creation = new Queue();
         super.onCreate(savedInstanceState);
 
         SPAL spal = new SPAL(this);

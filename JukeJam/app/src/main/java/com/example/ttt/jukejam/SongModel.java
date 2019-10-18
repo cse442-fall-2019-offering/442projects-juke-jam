@@ -34,4 +34,8 @@ public class SongModel {
     public void upVote(){
         upVotes++;
     }
+
+    public void downVote(){ upVotes--; }
+
+    public void setUpVotes(int numUpVotes){ upVotes = numUpVotes; }
 }

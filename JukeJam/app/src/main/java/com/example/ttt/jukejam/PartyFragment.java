@@ -20,9 +20,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.PriorityQueue;
 
 
 /**
@@ -46,7 +48,7 @@ public class PartyFragment extends Fragment {
     private TextView partyNameTV;
 
     private List<SongModel> myDataset;
-    private RecyclerView.Adapter myAdapter;
+    private static RecyclerView.Adapter myAdapter;
     private RecyclerView.LayoutManager layoutManager;
     public PartyFragment() {
         // Required empty public constructor
@@ -99,10 +101,10 @@ public class PartyFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        myDataset = dummyData();
-        Log.d("PartyFragment", "setupUI: myDataset size = "+myDataset.size());
-        myAdapter = new PartyQueueRecyclerViewAdapter(myDataset,getContext());
+
+        myAdapter = new PartyQueueRecyclerViewAdapter(Queue.approvalQueue,getContext());
         recyclerView.setAdapter(myAdapter);
+        Queue.num = 1;
     }
 
     private List<SongModel> dummyData(){
@@ -132,4 +134,8 @@ public class PartyFragment extends Fragment {
         });
     }
 
+    public static void  updateData() {
+        PartyQueueRecyclerViewAdapter.reAssignAndSortData();
+        myAdapter.notifyDataSetChanged();
+    }
 }

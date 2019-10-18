@@ -11,14 +11,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class Song_Request_Adapeter extends ArrayAdapter<SongModel> {
+    private static ArrayList<SongModel> dataset;
 
     public Song_Request_Adapeter(Context context, ArrayList<SongModel> friends) {
-        super(context,0,friends);
+        super(context,0,dataset);
     }
 
     @NonNull
@@ -41,6 +45,11 @@ public class Song_Request_Adapeter extends ArrayAdapter<SongModel> {
                 final String tag = (String) view.getTag();
                 Toast.makeText(getContext(), request.getTitle()+"Added", Toast.LENGTH_LONG).show();
                 Song_Request_Adapeter.this.remove(getItem(position));
+                SongModel temp = Queue.findSongInQueue(request.getTitle(), request.getArtist(), Queue.approvalQueue);
+                Queue.addSongToSongQueue(temp);
+
+                FirebaseCommunicator.sendData(Queue.approvalQueue);
+
             }
         };
         View.OnClickListener removeSong = new View.OnClickListener(){
@@ -48,6 +57,9 @@ public class Song_Request_Adapeter extends ArrayAdapter<SongModel> {
             public void onClick(View view){
                 Toast.makeText(getContext(), request.getTitle()+"Removed", Toast.LENGTH_LONG).show();
                 Song_Request_Adapeter.this.remove(getItem(position));
+                Queue.removeSongFromApprovalQueue(request);
+
+                FirebaseCommunicator.sendData(Queue.approvalQueue);
             }
         };
         ImageButton addSongIB = listItemView.findViewById(R.id.addSong);
@@ -56,6 +68,11 @@ public class Song_Request_Adapeter extends ArrayAdapter<SongModel> {
         deleteRequestIB.setOnClickListener(removeSong);
 
         return listItemView;
+    }
+
+    public static void reAssignAndSortData(){
+        dataset = Queue.approvalQueue;
+        Collections.sort(dataset, new SongComparator());
     }
 }
 
