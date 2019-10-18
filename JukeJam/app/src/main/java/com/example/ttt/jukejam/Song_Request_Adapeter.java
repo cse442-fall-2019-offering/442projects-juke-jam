@@ -19,9 +19,10 @@ import androidx.annotation.Nullable;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Song_Request_Adapeter extends ArrayAdapter<SongModel> {
+    private static ArrayList<SongModel> dataset;
 
     public Song_Request_Adapeter(Context context, ArrayList<SongModel> friends) {
-        super(context,0,friends);
+        super(context,0,dataset);
     }
 
     @NonNull
@@ -44,18 +45,11 @@ public class Song_Request_Adapeter extends ArrayAdapter<SongModel> {
                 final String tag = (String) view.getTag();
                 Toast.makeText(getContext(), request.getTitle()+"Added", Toast.LENGTH_LONG).show();
                 Song_Request_Adapeter.this.remove(getItem(position));
-                Queue.addSongToSongQueue(request);
-                Collections.sort(Queue.songQueue, new SongComparator());
+                SongModel temp = Queue.findSongInQueue(request.getTitle(), request.getArtist(), Queue.approvalQueue);
+                Queue.addSongToSongQueue(temp);
 
-                //String joinCode = "1234";
-                //String roomName = "aiden";
                 FirebaseCommunicator.sendData(Queue.approvalQueue);
 
-                //FirebaseFirestore db = FirebaseFirestore.getInstance();
-                //Room room = new Room(joinCode, roomName, Queue.songQueue);
-                //db.collection("rooms").document(DAL.hashedCode).set(room);
-                //Room room = new Room(joinCode, roomName, Queue.songQueue);
-                //FirebaseCommunicator fbc = new FirebaseCommunicator(room);
             }
         };
         View.OnClickListener removeSong = new View.OnClickListener(){
@@ -64,7 +58,8 @@ public class Song_Request_Adapeter extends ArrayAdapter<SongModel> {
                 Toast.makeText(getContext(), request.getTitle()+"Removed", Toast.LENGTH_LONG).show();
                 Song_Request_Adapeter.this.remove(getItem(position));
                 Queue.removeSongFromApprovalQueue(request);
-                //removeFromFirebase
+
+                FirebaseCommunicator.sendData(Queue.approvalQueue);
             }
         };
         ImageButton addSongIB = listItemView.findViewById(R.id.addSong);
@@ -73,6 +68,11 @@ public class Song_Request_Adapeter extends ArrayAdapter<SongModel> {
         deleteRequestIB.setOnClickListener(removeSong);
 
         return listItemView;
+    }
+
+    public static void reAssignAndSortData(){
+        dataset = Queue.approvalQueue;
+        Collections.sort(dataset, new SongComparator());
     }
 }
 

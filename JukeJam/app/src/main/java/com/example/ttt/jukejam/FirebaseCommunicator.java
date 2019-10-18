@@ -1,5 +1,6 @@
 package com.example.ttt.jukejam;
 
+import android.provider.Telephony;
 import android.util.Log;
 
 import com.google.firebase.firestore.CollectionReference;
@@ -23,9 +24,7 @@ public class FirebaseCommunicator {
 
     public FirebaseCommunicator(Room room){
         CollectionReference collection = db.collection("rooms");
-        //collection.add(room);
         collection.document(DAL.hashedCode).set(room);
-        //db.collection("rooms").document(DAL.hashedCode).set(room);
     }
 
     public static void listenToDocument(String joinCode) {
@@ -40,21 +39,37 @@ public class FirebaseCommunicator {
                     return;
                 }
 
-               // if (snapshot != null && snapshot.exists()) {
-                    //Log.d("DataFetch", "Current data: " + snapshot.getData());
-                    //Room room = snapshot.toObject(Room.class);
                 setRoomCode(snapshot.get("joinCode").toString());
                 setRoomName(snapshot.get("roomName").toString());
                 ArrayList<HashMap> temp= (ArrayList<HashMap>) snapshot.get("songs");
                 Queue.approvalQueue = Queue.hashMapToQueue(temp);
-                //Queue.songQueue = (ArrayList<SongModel>) room.songs;
-                //} else {
-                //    Log.d("DataFetch", "Current data: null");
-                //}
+                if(Queue.num == 1) {
+                    PartyFragment.updateData();
+                }
 
             }
         });
         // [END listen_document]
+    }
+
+    public static void DJListener(String joinCode) {
+        // [START listen_document]
+        final DocumentReference docRef = db.collection("rooms").document(joinCode);
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w("DataFetch", "Listen failed.", e);
+                    return;
+                }
+
+                setRoomCode(snapshot.get("joinCode").toString());
+                setRoomName(snapshot.get("roomName").toString());
+                ArrayList<HashMap> temp= (ArrayList<HashMap>) snapshot.get("songs");
+                Queue.approvalQueue = Queue.hashMapToQueue(temp);
+                DJFragment.updateData();
+            }
+        });
     }
 
     public static void sendData(ArrayList<SongModel> tempArray){

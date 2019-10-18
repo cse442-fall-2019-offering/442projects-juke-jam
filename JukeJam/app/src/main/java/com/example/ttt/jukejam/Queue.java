@@ -8,7 +8,7 @@ import java.util.PriorityQueue;
 
 public class Queue {
 
-
+    public static int num = 0;
     public static ArrayList<SongModel> songQueue = new ArrayList<SongModel>(10);        //in-house queue that is regularly changing
     public static ArrayList<SongModel> spotifyQueue = new ArrayList<SongModel>(3);     //queue that holds current song being played and directly after
     public static ArrayList<SongModel> approvalQueue = new ArrayList<SongModel>(10);    //songs that require DJ approval to add to in-house queue

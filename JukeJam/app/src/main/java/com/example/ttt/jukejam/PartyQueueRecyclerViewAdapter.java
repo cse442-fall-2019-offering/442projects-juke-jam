@@ -1,5 +1,6 @@
 package com.example.ttt.jukejam;
 import android.content.Context;
+import android.provider.Telephony;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,19 +10,21 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 public class PartyQueueRecyclerViewAdapter extends RecyclerView.Adapter<PartyQueueRecyclerViewAdapter.PartyQueueHolder>{
-    private List<SongModel> dataset;
-    private Context context;
+    private static List<SongModel> dataset;
+    private static Context context;
 //    private OnItemClicked listener;
     private SongModel song;
 
     public PartyQueueRecyclerViewAdapter(List<SongModel> myDataset, Context context){
         dataset=myDataset;
+        Collections.sort(dataset, new SongComparator());
         Log.d("Adapter", "PartyQueueRecyclerViewAdapter: dataset size= "+dataset.size());
         this.context=context;
     }
@@ -49,7 +52,7 @@ public class PartyQueueRecyclerViewAdapter extends RecyclerView.Adapter<PartyQue
         return dataset.size();
     }
 
-    public class PartyQueueHolder extends RecyclerView.ViewHolder{
+    public static class PartyQueueHolder extends RecyclerView.ViewHolder{
         private TextView titleTV;
         private TextView artistTV;
         private TextView upvoteCountTV;
@@ -70,10 +73,14 @@ public class PartyQueueRecyclerViewAdapter extends RecyclerView.Adapter<PartyQue
                     String title = (String) titleTV.getText();
                     String artist = (String) artistTV.getText();
                     SongModel upvotedSong = Queue.findSongInQueue(title, artist, Queue.approvalQueue);
+                    //int i = Queue.findSongNumInQueue(title, artist, Queue.approvalQueue);
                     upvotedSong.upVote();
+                    //Queue.approvalQueue.get(i).upVote();
                     //redraw fragment
                     FirebaseCommunicator.sendData(Queue.approvalQueue);
-                    upvoteCountTV.setText(String.valueOf(Integer.valueOf(upvoteCountTV.getText().toString())+1));
+
+                    //notifyDataSetChanged();
+                    //upvoteCountTV.setText(String.valueOf(Integer.valueOf(upvoteCountTV.getText().toString())+1));
                 }
             });
 
@@ -86,7 +93,8 @@ public class PartyQueueRecyclerViewAdapter extends RecyclerView.Adapter<PartyQue
                     downvotedSong.downVote();
                     //redraw fragment
                     FirebaseCommunicator.sendData(Queue.approvalQueue);
-                    upvoteCountTV.setText(String.valueOf(Integer.valueOf(upvoteCountTV.getText().toString())-1));
+                    //upvoteCountTV.setText(String.valueOf(Integer.valueOf(upvoteCountTV.getText().toString())-1));
+
                 }
             });
         }
@@ -94,5 +102,10 @@ public class PartyQueueRecyclerViewAdapter extends RecyclerView.Adapter<PartyQue
 
     public interface OnItemClicked{
         void onItemClick(SongModel model);
+    }
+
+    public static void reAssignAndSortData(){
+        dataset = Queue.approvalQueue;
+        Collections.sort(dataset, new SongComparator());
     }
 }

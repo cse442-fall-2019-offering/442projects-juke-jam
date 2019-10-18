@@ -48,7 +48,7 @@ public class PartyFragment extends Fragment {
     private TextView partyNameTV;
 
     private List<SongModel> myDataset;
-    private RecyclerView.Adapter myAdapter;
+    private static RecyclerView.Adapter myAdapter;
     private RecyclerView.LayoutManager layoutManager;
     public PartyFragment() {
         // Required empty public constructor
@@ -100,13 +100,10 @@ public class PartyFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        //myDataset = dummyData();
-        //Log.d("PartyFragment", "setupUI: myDataset size = "+myDataset.size());
-        //PriorityQueue<SongModel> tempQueue = new PriorityQueue<SongModel>(Queue.songQueue);
-        //tempQueue = Queue.songQueue;
-        Collections.sort(Queue.songQueue,new SongComparator());
+
         myAdapter = new PartyQueueRecyclerViewAdapter(Queue.approvalQueue,getContext());
         recyclerView.setAdapter(myAdapter);
+        Queue.num = 1;
     }
 
     private List<SongModel> dummyData(){
@@ -136,4 +133,8 @@ public class PartyFragment extends Fragment {
         });
     }
 
+    public static void  updateData() {
+        PartyQueueRecyclerViewAdapter.reAssignAndSortData();
+        myAdapter.notifyDataSetChanged();
+    }
 }
