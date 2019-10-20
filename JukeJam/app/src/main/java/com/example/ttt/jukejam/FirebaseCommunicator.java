@@ -54,7 +54,11 @@ public class FirebaseCommunicator {
 
     public static void DJListener(String joinCode) {
         // [START listen_document]
+        if(joinCode==null) {
+            joinCode="nojoincode";
+        }
         final DocumentReference docRef = db.collection("rooms").document(joinCode);
+
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
@@ -74,6 +78,8 @@ public class FirebaseCommunicator {
 
     public static void sendData(ArrayList<SongModel> tempArray){
         Room room = new Room(roomCode, roomName, tempArray);
+
+        //TODO fix nullpointer here
         db.collection("rooms").document(""+roomCode.hashCode()).set(room);
     }
 

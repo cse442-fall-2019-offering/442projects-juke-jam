@@ -74,22 +74,22 @@ public class DJFragment extends Fragment {
         setupListeners();
         return v;
     }
-    private List<SongModel> dummyData(){
-        List<SongModel> retVal = new ArrayList<SongModel>();
-        SongModel s = new SongModel("Hey ya!","Outkast",null);
-        for(int i=0;i<10;i++) s.upVote();
-        retVal.add(s);
-        s = new SongModel("Broken Arrows","Avicii",null);
-        for(int i=0;i<5;i++) s.upVote();
-
-        retVal.add(s);
-        s = new SongModel("All Star","Smash Mouth",null);
-        for(int i=0;i<3;i++) s.upVote();
-
-        retVal.add(s);
-        Log.d("PartyFragment", "got here: dummyData: ");
-        return  retVal;
-    }
+//    private List<SongModel> dummyData(){
+//        List<SongModel> retVal = new ArrayList<SongModel>();
+//        SongModel s = new SongModel("Hey ya!","Outkast",null);
+//        for(int i=0;i<10;i++) s.upVote();
+//        retVal.add(s);
+//        s = new SongModel("Broken Arrows","Avicii",null);
+//        for(int i=0;i<5;i++) s.upVote();
+//
+//        retVal.add(s);
+//        s = new SongModel("All Star","Smash Mouth",null);
+//        for(int i=0;i<3;i++) s.upVote();
+//
+//        retVal.add(s);
+//        Log.d("PartyFragment", "got here: dummyData: ");
+//        return  retVal;
+//    }
 
     public void setupUI(View rootVeiw){
         searchBtn = rootVeiw.findViewById(R.id.searchButton);
@@ -113,5 +113,7 @@ public class DJFragment extends Fragment {
 
 
     }
+
+
 
 }

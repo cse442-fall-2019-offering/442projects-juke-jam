@@ -200,7 +200,7 @@ public class MainActivity extends FragmentActivity implements
 
     private void connected() {
         // Play a playlist
-        mSpotifyAppRemote.getPlayerApi().play("spotify:track:2PpruBYCo4H7WOBJ7Q2EwM");
+        //mSpotifyAppRemote.getPlayerApi().play("spotify:track:2PpruBYCo4H7WOBJ7Q2EwM");
 
         OkHttpClient client = new OkHttpClient();
         String url = "https://api.spotify.com/v1/search?q=tania%20bowra&type=artist"; //-H \"Authorization: Bearer "+ACCESS_TOKEN+"\"";

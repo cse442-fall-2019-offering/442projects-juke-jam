@@ -197,7 +197,8 @@ public class SearchFragment extends Fragment {
 
             SongModel model = new SongModel(name,artist,uri);
             retVal.add(model);
-            Log.d("SearchActivity", "extractSearchQueryResults: added song: "+name+" by "+" uri: "+uri);
+            Log.d("SearchActivity", "extractSearchQueryResults: added song: "+name+" by "+artist+" uri: "+uri);
+            Log.d("SearchActivity", "extractSearchQueryResults: added model: "+model.getTitle()+" by "+model.getArtist()+" uri: "+model.getUri());
         }
         Log.d("SearchActivity", "tracks: "+tracks);
 
