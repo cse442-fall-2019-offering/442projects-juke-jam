@@ -4,17 +4,29 @@ package com.example.ttt.jukejam;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 /**
@@ -31,8 +43,10 @@ public class JoinPartyFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private FirebaseCommunicator fc = new FirebaseCommunicator();
     private Button joinRoomBtn;
+    private EditText partyName;
+
     public JoinPartyFragment() {
         // Required empty public constructor
     }
@@ -76,33 +90,52 @@ public class JoinPartyFragment extends Fragment {
 
     public void setupUI(View rootView){
         joinRoomBtn = rootView.findViewById(R.id.joinRoomBtn);
+        partyName = rootView.findViewById(R.id.partyName);
     }
     public void setupListeners(){
+        partyName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String joinCode = partyName.getText().toString();
+                String hashCode = ""+joinCode.hashCode();
+                fc.checkRoom(hashCode);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         joinRoomBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText partyCode = getActivity().findViewById(R.id.partyName);
                 String joinCode = partyCode.getText().toString();
-                FirebaseCommunicator.listenToDocument(""+joinCode.hashCode());
-
-                try
-                {
-                    Thread.sleep(3000);
+                String hashCode = ""+joinCode.hashCode();
+                if(fc.roomExists() > 0){
+                    fc.listenToDocument("" + hashCode);
+                    PartyFragment partyFrag = new PartyFragment();
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_container_guest, partyFrag);
+                    ft.commit();
+                    EditText partyCodeET = getActivity().findViewById(R.id.partyName);
+                    SPAL spal = new SPAL(getActivity());
+                    spal.writeSharedPrefrences(partyCodeET.getText().toString(), false, "");
                 }
-                catch(InterruptedException ex)
-                {
-                    Thread.currentThread().interrupt();
+                else{
+                    Toast t = Toast.makeText(getContext(), "Please enter a valid join code", Toast.LENGTH_LONG);
+                    t.setGravity(Gravity.TOP|Gravity.CENTER, 0, 200);
+                    t.show();
                 }
-
-                PartyFragment partyFrag = new PartyFragment();
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_container_guest, partyFrag);
-                ft.commit();
-                EditText partyCodeET = getActivity().findViewById(R.id.partyName);
-                SPAL spal = new SPAL(getActivity());
-                spal.writeSharedPrefrences(partyCodeET.getText().toString(),false,"");
             }
         });
     }
+
+
 
 }

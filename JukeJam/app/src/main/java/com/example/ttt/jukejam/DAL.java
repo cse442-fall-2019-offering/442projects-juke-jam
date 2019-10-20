@@ -28,13 +28,6 @@ public class DAL {
         FirebaseCommunicator.setRoomCode(joinCode);
         FirebaseCommunicator.setRoomName(name);
         FirebaseCommunicator.sendData(Queue.approvalQueue);
-        //Map<String, Object> room = new HashMap<>();
-        //room.put(DAL_Join_Code_Field, joinCode);
-        //room.put(DAL_Room_Name_Field, name);
-        //ArrayList<Map<String,String>>  songs = new ArrayList<>();
-        //room.put(DAL_Song_Name_Map_Key,songs);
-        //Room room = new Room(joinCode, name, Queue.songQueue);
-        //db.collection(DAL_Rooms).document(""+joinCode.hashCode()).set(room);
     }
 
 
