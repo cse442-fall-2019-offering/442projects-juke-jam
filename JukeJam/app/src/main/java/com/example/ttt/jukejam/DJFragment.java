@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.example.ttt.jukejam.CreatePartyFragment.ROOM_NAME;
+
 
 public class DJFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -65,7 +67,7 @@ public class DJFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_dj, container, false);
         listView = v.findViewById(R.id.songRequestsLV);
         listView.setAdapter(adapter);
-        String Name = getArguments().getString("Name");
+        String Name = getArguments().getString(ROOM_NAME);
         TextView roomNameTV = (TextView) v.findViewById(R.id.roomName);
         roomNameTV.setText(Name);
         setupUI(v);

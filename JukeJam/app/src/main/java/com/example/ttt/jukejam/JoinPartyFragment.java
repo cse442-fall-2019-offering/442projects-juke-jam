@@ -1,6 +1,8 @@
 package com.example.ttt.jukejam;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -96,6 +98,9 @@ public class JoinPartyFragment extends Fragment {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_container_guest, partyFrag);
                 ft.commit();
+                EditText partyCodeET = getActivity().findViewById(R.id.partyName);
+                SPAL spal = new SPAL(getActivity());
+                spal.writeSharedPrefrences(partyCodeET.getText().toString(),false,"");
             }
         });
     }
