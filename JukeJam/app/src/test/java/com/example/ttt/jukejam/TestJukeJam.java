@@ -67,6 +67,7 @@ public class TestJukeJam {
         HashMap map = new HashMap();
         map.put("title", "title1");
         map.put("artist", "artist1");
+        map.put("uri", "testing.com");
         map.put("upVotes", 20);
         ArrayList<HashMap> arr = new ArrayList<HashMap>();
         arr.add(map);
