@@ -57,7 +57,7 @@ public class DJFragment extends Fragment {
             Thread.currentThread().interrupt();
         }
         Song_Request_Adapeter.reAssignAndSortData();
-        adapter = new Song_Request_Adapeter(getContext(), Queue.approvalQueue);
+        adapter = new Song_Request_Adapeter(getContext(), Queue.requestList);
     }
 
     @Override
@@ -105,7 +105,7 @@ public class DJFragment extends Fragment {
     }
     public static void  updateData() {
         adapter.clear();
-        ArrayList<SongModel> tempArray = new ArrayList<SongModel>(Queue.approvalQueue);
+        ArrayList<SongModel> tempArray = new ArrayList<SongModel>(Queue.requestList);
         Collections.sort(tempArray, new SongComparator());
         adapter.addAll(tempArray);
         listView.setAdapter(adapter);

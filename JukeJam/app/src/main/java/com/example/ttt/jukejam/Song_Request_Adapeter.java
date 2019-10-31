@@ -45,10 +45,10 @@ public class Song_Request_Adapeter extends ArrayAdapter<SongModel> {
                 final String tag = (String) view.getTag();
                 Toast.makeText(getContext(), request.getTitle()+"Added", Toast.LENGTH_LONG).show();
                 Song_Request_Adapeter.this.remove(getItem(position));
-                SongModel temp = Queue.findSongInQueue(request.getTitle(), request.getArtist(), Queue.approvalQueue);
+                SongModel temp = Queue.findSongInQueue(request.getTitle(), request.getArtist(), Queue.requestList);
                 Queue.addSongToSongQueue(temp);
                 ((DJActivity)getContext()).sendToSpotify(request.getUri());
-                FirebaseCommunicator.sendData(Queue.approvalQueue);
+                FirebaseCommunicator.sendData(Queue.requestList);
 
             }
         };
@@ -59,7 +59,7 @@ public class Song_Request_Adapeter extends ArrayAdapter<SongModel> {
                 Song_Request_Adapeter.this.remove(getItem(position));
                 Queue.removeSongFromApprovalQueue(request);
 
-                FirebaseCommunicator.sendData(Queue.approvalQueue);
+                FirebaseCommunicator.sendData(Queue.requestList);
             }
         };
         ImageButton addSongIB = listItemView.findViewById(R.id.addSong);
@@ -71,7 +71,7 @@ public class Song_Request_Adapeter extends ArrayAdapter<SongModel> {
     }
 
     public static void reAssignAndSortData(){
-        dataset = Queue.approvalQueue;
+        dataset = Queue.requestList;
         Collections.sort(dataset, new SongComparator());
     }
 }

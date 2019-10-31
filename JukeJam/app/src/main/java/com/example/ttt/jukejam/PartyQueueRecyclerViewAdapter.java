@@ -72,12 +72,12 @@ public class PartyQueueRecyclerViewAdapter extends RecyclerView.Adapter<PartyQue
                 public void onClick(View view) {
                     String title = (String) titleTV.getText();
                     String artist = (String) artistTV.getText();
-                    SongModel upvotedSong = Queue.findSongInQueue(title, artist, Queue.approvalQueue);
-                    //int i = Queue.findSongNumInQueue(title, artist, Queue.approvalQueue);
+                    SongModel upvotedSong = Queue.findSongInQueue(title, artist, Queue.requestList);
+                    //int i = Queue.findSongNumInQueue(title, artist, Queue.requestList);
                     upvotedSong.upVote();
-                    //Queue.approvalQueue.get(i).upVote();
+                    //Queue.requestList.get(i).upVote();
                     //redraw fragment
-                    FirebaseCommunicator.sendData(Queue.approvalQueue);
+                    FirebaseCommunicator.sendData(Queue.requestList);
 
                     //notifyDataSetChanged();
                     //upvoteCountTV.setText(String.valueOf(Integer.valueOf(upvoteCountTV.getText().toString())+1));
@@ -89,10 +89,10 @@ public class PartyQueueRecyclerViewAdapter extends RecyclerView.Adapter<PartyQue
                 public void onClick(View view) {
                     String title = (String) titleTV.getText();
                     String artist = (String) artistTV.getText();
-                    SongModel downvotedSong = Queue.findSongInQueue(title, artist, Queue.approvalQueue);
+                    SongModel downvotedSong = Queue.findSongInQueue(title, artist, Queue.requestList);
                     downvotedSong.downVote();
                     //redraw fragment
-                    FirebaseCommunicator.sendData(Queue.approvalQueue);
+                    FirebaseCommunicator.sendData(Queue.requestList);
                     //upvoteCountTV.setText(String.valueOf(Integer.valueOf(upvoteCountTV.getText().toString())-1));
 
                 }
@@ -105,7 +105,7 @@ public class PartyQueueRecyclerViewAdapter extends RecyclerView.Adapter<PartyQue
     }
 
     public static void reAssignAndSortData(){
-        dataset = Queue.approvalQueue;
+        dataset = Queue.requestList;
         Collections.sort(dataset, new SongComparator());
     }
 }

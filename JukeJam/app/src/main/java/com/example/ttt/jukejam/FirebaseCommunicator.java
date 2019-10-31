@@ -50,7 +50,7 @@ public class FirebaseCommunicator{
                     setRoomCode(snapshot.get("joinCode").toString());
                     setRoomName(snapshot.get("roomName").toString());
                     ArrayList<HashMap> temp = (ArrayList<HashMap>) snapshot.get("songs");
-                    Queue.approvalQueue = Queue.hashMapToQueue(temp);
+                    Queue.requestList = Queue.hashMapToQueue(temp);
                     if (Queue.num == 1) {
                         PartyFragment.updateData();
                     }
@@ -62,7 +62,8 @@ public class FirebaseCommunicator{
     public static void DJListener(String joinCode) {
         // [START listen_document]
         if(joinCode==null) {
-            joinCode="nojoincode";
+            roomCode="nojoincode";
+            return;
         }
         final DocumentReference docRef = db.collection("rooms").document(joinCode);
 
@@ -77,7 +78,7 @@ public class FirebaseCommunicator{
                 setRoomCode(snapshot.get("joinCode").toString());
                 setRoomName(snapshot.get("roomName").toString());
                 ArrayList<HashMap> temp= (ArrayList<HashMap>) snapshot.get("songs");
-                Queue.approvalQueue = Queue.hashMapToQueue(temp);
+                Queue.requestList = Queue.hashMapToQueue(temp);
                 DJFragment.updateData();
             }
         });
