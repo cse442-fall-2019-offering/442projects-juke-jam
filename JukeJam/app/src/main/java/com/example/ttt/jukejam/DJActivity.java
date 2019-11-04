@@ -82,11 +82,19 @@ public class DJActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.closeParty:
-                //TODO: remove room from database
+                //Closes a party and removes it from Firebase.
+                FirebaseCommunicator.closeRoom();
                 SPAL spal = new SPAL(this);
                 spal.clearSharedPrefrences();
                 Intent intent = new Intent(this,MainActivity.class);
                 startActivity(intent);
+                return true;
+            case R.id.closePartyDev:
+                //Won't delete a room from Firebase. Use for testing purposes.
+                SPAL spal2 = new SPAL(this);
+                spal2.clearSharedPrefrences();
+                Intent intent2 = new Intent(this,MainActivity.class);
+                startActivity(intent2);
                 return true;
 
         }

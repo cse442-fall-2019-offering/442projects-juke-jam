@@ -74,12 +74,15 @@ public class FirebaseCommunicator{
                     Log.w("DataFetch", "Listen failed.", e);
                     return;
                 }
-
-                setRoomCode(snapshot.get("joinCode").toString());
-                setRoomName(snapshot.get("roomName").toString());
-                ArrayList<HashMap> temp= (ArrayList<HashMap>) snapshot.get("songs");
-                Queue.requestList = Queue.hashMapToQueue(temp);
-                DJFragment.updateData();
+                try {
+                    setRoomCode(snapshot.get("joinCode").toString());
+                    setRoomName(snapshot.get("roomName").toString());
+                    ArrayList<HashMap> temp = (ArrayList<HashMap>) snapshot.get("queue");
+                    Queue.requestList = Queue.hashMapToQueue(temp);
+                    DJFragment.updateData();
+                } catch(NullPointerException n){
+                    Log.d("Null", "There as a NPE");
+                }
             }
         });
     }
@@ -103,6 +106,10 @@ public class FirebaseCommunicator{
                 }
             }
         });
+    }
+
+    public static void closeRoom() {
+        db.collection("rooms").document(""+roomCode.hashCode()).delete();
     }
 
     public static int roomExists() {
