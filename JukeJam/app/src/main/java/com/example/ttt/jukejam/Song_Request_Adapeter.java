@@ -47,8 +47,8 @@ public class Song_Request_Adapeter extends ArrayAdapter<SongModel> {
                 Song_Request_Adapeter.this.remove(getItem(position));
                 SongModel temp = Queue.findSongInQueue(request.getTitle(), request.getArtist(), Queue.requestList);
                 Queue.addSongToSongQueue(temp);
-                ((DJActivity)getContext()).sendToSpotify(request.getUri());
-                FirebaseCommunicator.sendData(Queue.requestList);
+                //((DJActivity)getContext()).sendToSpotify(request.getUri());
+                FirebaseCommunicator.sendData(Queue.requestList, Queue.songQueue);
 
             }
         };
@@ -59,7 +59,7 @@ public class Song_Request_Adapeter extends ArrayAdapter<SongModel> {
                 Song_Request_Adapeter.this.remove(getItem(position));
                 Queue.removeSongFromApprovalQueue(request);
 
-                FirebaseCommunicator.sendData(Queue.requestList);
+                FirebaseCommunicator.sendData(Queue.requestList, Queue.songQueue);
             }
         };
         ImageButton addSongIB = listItemView.findViewById(R.id.addSong);

@@ -27,7 +27,7 @@ public class DAL {
         hashedCode = ""+joinCode.hashCode();
         FirebaseCommunicator.setRoomCode(joinCode);
         FirebaseCommunicator.setRoomName(name);
-        FirebaseCommunicator.sendData(Queue.requestList);
+        FirebaseCommunicator.sendData(Queue.requestList, Queue.songQueue);
     }
 
 

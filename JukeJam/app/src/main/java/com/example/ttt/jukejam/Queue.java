@@ -16,7 +16,7 @@ public class Queue {
     public Queue(){
         SongModel s = new SongModel("Hey ya!","Outkast","");
         for(int i=0;i<10;i++) s.upVote();
-        //songQueue.add(s);
+        songQueue.add(s);
         requestList.add(s);
 
         s = new SongModel("Never Gonna Give You Up","Rick Astley","");
