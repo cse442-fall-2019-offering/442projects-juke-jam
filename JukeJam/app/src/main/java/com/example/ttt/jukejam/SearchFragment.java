@@ -109,7 +109,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("SearchActivity", "SearchBtn onClick: ");
-                String searchResultsString = "";//runSearchQuery(searchET.getText().toString());
+                String searchResultsString = runSearchQuery(searchET.getText().toString());
                 List<SongModel> searchResults = extractSearchQueryResults(searchResultsString);
                 Log.d("SearchActivity", "onClick: searchResults.size = "+searchResults.size());
                 adapter = new Search_Adapter(getContext(), (ArrayList<SongModel>)searchResults);
@@ -147,7 +147,8 @@ public class SearchFragment extends Fragment {
         Log.d("runSearchQuery", "token: "+ACCESS_TOKEN);
         OkHttpClient client = new OkHttpClient();
         //TODO convert input into url encoding(replaces spaces with %20) and insert into url
-        String url = "https://api.spotify.com/v1/search?q=hey%20ya&type=track"; //-H \"Authorization: Bearer "+ACCESS_TOKEN+"\"";
+        String queryInput=input.replaceAll(" ", "%20");
+        String url = "https://api.spotify.com/v1/search?q="+queryInput+"&type=track"; //-H \"Authorization: Bearer "+ACCESS_TOKEN+"\"";
         Log.d("URL", url);
         Headers mAuthHeader = Headers.of("Authorization", "Bearer " + ACCESS_TOKEN);
         Request request = new Request.Builder().get().headers(mAuthHeader).url(url).build();
