@@ -11,14 +11,14 @@ import androidx.lifecycle.ViewModel;
 public class SpotifyViewModel extends ViewModel {
     private MutableLiveData<String> token;
     private MutableLiveData<SpotifyAppRemote> spotifyAppRemote;
-    public String getToken() {
+    public MutableLiveData<String> getToken() {
 
         if (token == null) {
             token = new MutableLiveData<String>();
             //setToken("");
         }
         Log.d("ViewModel", "getToken: "+token.getValue());
-        return token.getValue();
+        return token;//.getValue();
     }
 //    public LiveData<SpotifyAppRemote> getAppRemote() {
 //        return spotifyAppRemote;
@@ -30,7 +30,7 @@ public class SpotifyViewModel extends ViewModel {
             token = new MutableLiveData<String>();
         }
 
-        token.setValue(t);
+        token.postValue(t);
         Log.d("ViewModel", "setToken: "+token.getValue());
 
     }

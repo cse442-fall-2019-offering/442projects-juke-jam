@@ -73,7 +73,9 @@ public class FirebaseCommunicator{
                     Log.w("DataFetch", "Listen failed.", e);
                     return;
                 }
-
+                if(snapshot.get("joinCode")==null){
+                    return;
+                }
                 setRoomCode(snapshot.get("joinCode").toString());
                 setRoomName(snapshot.get("roomName").toString());
                 ArrayList<HashMap> temp= (ArrayList<HashMap>) snapshot.get("songs");

@@ -135,6 +135,9 @@ public class DJActivity extends AppCompatActivity {
 
     public void sendToSpotify(String uri){
         Log.d("DJACtivity", "sendToSpotify: got here uri: "+uri);
+        if(mSpotifyAppRemote==null){
+
+        }
         mSpotifyAppRemote.getPlayerApi().queue(uri);
     }
 

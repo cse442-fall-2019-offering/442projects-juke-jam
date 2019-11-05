@@ -1,6 +1,8 @@
 package com.example.ttt.jukejam;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -52,7 +54,8 @@ public class SearchFragment extends Fragment {
     private String mParam2;
     private SpotifyViewModel model;
     private String ACCESS_TOKEN;
-
+    private String searchResultsString;
+    private boolean searchQueryCompleted=false;
     public SearchFragment() {
         // Required empty public constructor
     }
@@ -109,7 +112,11 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("SearchActivity", "SearchBtn onClick: ");
-                String searchResultsString = runSearchQuery(searchET.getText().toString());
+                searchQueryCompleted=false;
+                runSearchQuery(searchET.getText().toString());
+                while(!searchQueryCompleted){
+
+                }
                 List<SongModel> searchResults = extractSearchQueryResults(searchResultsString);
                 Log.d("SearchActivity", "onClick: searchResults.size = "+searchResults.size());
                 adapter = new Search_Adapter(getContext(), (ArrayList<SongModel>)searchResults);
@@ -123,14 +130,14 @@ public class SearchFragment extends Fragment {
 
     private List<SongModel> dummyData(){
         List<SongModel> retVal = new ArrayList<SongModel>();
-        SongModel s = new SongModel("Hey ya!","Outkast",null);
+        SongModel s = new SongModel("Hey ya!","Outkast","spotify:track:2PpruBYCo4H7WOBJ7Q2EwM");
         for(int i=0;i<10;i++) s.upVote();
         retVal.add(s);
-        s = new SongModel("Broken Arrows","Avicii",null);
+        s = new SongModel("Broken Arrows","Avicii","spotify:track:260jSxvzkFt71ksvkcy2ke");
         for(int i=0;i<5;i++) s.upVote();
 
         retVal.add(s);
-        s = new SongModel("All Star","Smash Mouth",null);
+        s = new SongModel("All Star","Smash Mouth","spotify:track:3cfOd4CMv2snFaKAnMdnvK");
         for(int i=0;i<3;i++) s.upVote();
 
         retVal.add(s);
@@ -143,7 +150,17 @@ public class SearchFragment extends Fragment {
         //output: the json string returned by calling
         String retVal="";
         model = ViewModelProviders.of(getActivity()).get(SpotifyViewModel.class);
-        ACCESS_TOKEN = model.getToken();
+
+        //Shared Pref test
+//        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+//        String defaultValue = "";
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("Saved Token", Context.MODE_PRIVATE);
+
+
+        //Content Provider test
+        ContentResolver contentResolver = getActivity().getContentResolver();
+
+        ACCESS_TOKEN = sharedPref.getString("ACCESS_TOKEN", "");//model.getToken().getValue();
         Log.d("runSearchQuery", "token: "+ACCESS_TOKEN);
         OkHttpClient client = new OkHttpClient();
         //TODO convert input into url encoding(replaces spaces with %20) and insert into url
@@ -163,62 +180,69 @@ public class SearchFragment extends Fragment {
             @Override
             public void onResponse(Response response) throws IOException {
                 if(response.isSuccessful()){
-                    String searchResults = response.body().string();
+                    searchResultsString = response.body().string();
                     Log.d("Got here", "got here response successful");
-                    Log.d("Search Results", searchResults);
+
+                    //handleSearchResults(searchResultsString);
                 }
                 else{
                     Log.d("Got here", "got here response NOT successful");
                     String searchResults = response.body().string();
                     Log.d("Search Results", searchResults);
-
+                    searchResultsString = "";
                 }
+                searchQueryCompleted = true;
             }
         });
         //TESTING
         //return retVal;
-        return "";
+
+
+        return retVal;
     }
+
+
 
     public List<SongModel> extractSearchQueryResults(String jsonString){
         List<SongModel> retVal = new ArrayList<SongModel>();
         Log.d("SearchActivity", "extractSearchQueryResults: got here");
         //TESTING
-        jsonString = loadFromJson();
+        //jsonString = loadFromJson();
         //TESTING
         Map map = new Gson().fromJson(jsonString, Map.class);
-        Log.d("SearchActivity", "Map: "+map.toString());
-        Map tracks = (Map)(map.get("tracks"));
-        ArrayList<Map> items = (ArrayList<Map>) tracks.get("items");
-        for(Map track: items){
-            String name = (String)track.get("name");
-            //ArrayList<Map> artists = (ArrayList<Map>) track.get("artist");
-            String artist = (String)((ArrayList<Map>)(track.get("artists"))).get(0).get("name");
-            String uri = (String)track.get("uri");
+        if(map!=null) {
+            Log.d("SearchActivity", "Map: " + map.toString());
+            Map tracks = (Map) (map.get("tracks"));
+            ArrayList<Map> items = (ArrayList<Map>) tracks.get("items");
+            for (Map track : items) {
+                String name = (String) track.get("name");
+                //ArrayList<Map> artists = (ArrayList<Map>) track.get("artist");
+                String artist = (String) ((ArrayList<Map>) (track.get("artists"))).get(0).get("name");
+                String uri = (String) track.get("uri");
 
-            SongModel model = new SongModel(name,artist,uri);
-            retVal.add(model);
-            Log.d("SearchActivity", "extractSearchQueryResults: added song: "+name+" by "+artist+" uri: "+uri);
-            Log.d("SearchActivity", "extractSearchQueryResults: added model: "+model.getTitle()+" by "+model.getArtist()+" uri: "+model.getUri());
+                SongModel model = new SongModel(name, artist, uri);
+                retVal.add(model);
+                Log.d("SearchActivity", "extractSearchQueryResults: added song: " + name + " by " + artist + " uri: " + uri);
+                Log.d("SearchActivity", "extractSearchQueryResults: added model: " + model.getTitle() + " by " + model.getArtist() + " uri: " + model.getUri());
+            }
+            Log.d("SearchActivity", "tracks: " + tracks);
         }
-        Log.d("SearchActivity", "tracks: "+tracks);
-
         return retVal;
     }
-
-    public String loadFromJson(){
-        String json;
-        try{
-            InputStream is = getActivity().getAssets().open("heyya.json");
-            byte[] buffer = new byte[is.available()];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer,"UTF-8");
-        }
-        catch(IOException e){
-            e.printStackTrace();
-            return null;
-        }
-        return json;
-    }
+//Commented out since it isn't used anymore, but may be useful for testing in the future
+//    public String loadFromJson(){
+//        String json;
+//        try{
+//            InputStream is = getActivity().getAssets().open("heyya.json");
+//            byte[] buffer = new byte[is.available()];
+//            is.read(buffer);
+//            is.close();
+//            json = new String(buffer,"UTF-8");
+//        }
+//        catch(IOException e){
+//            e.printStackTrace();
+//            return null;
+//        }
+//        return json;
+//    }
 }
