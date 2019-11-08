@@ -34,11 +34,9 @@ public class Song_Request_Adapeter extends ArrayAdapter<SongModel> {
         }
         TextView name = listItemView.findViewById(R.id.songName);
         TextView artist = listItemView.findViewById(R.id.artist);
-        TextView upVotes = listItemView.findViewById(R.id.numUpVotes);
         final SongModel request = getItem(position);
         name.setText(request.getTitle());
         artist.setText(request.getArtist());
-        upVotes.setText("" + request.getUpVotes());
         View.OnClickListener addSong = new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -49,7 +47,7 @@ public class Song_Request_Adapeter extends ArrayAdapter<SongModel> {
                 Queue.addSongToSongQueue(temp);
                 ((DJActivity)getContext()).sendToSpotify(request.getUri());
                 FirebaseCommunicator.sendData(Queue.approvalQueue);
-
+                
             }
         };
         View.OnClickListener removeSong = new View.OnClickListener(){
@@ -58,7 +56,6 @@ public class Song_Request_Adapeter extends ArrayAdapter<SongModel> {
                 Toast.makeText(getContext(), request.getTitle()+"Removed", Toast.LENGTH_LONG).show();
                 Song_Request_Adapeter.this.remove(getItem(position));
                 Queue.removeSongFromApprovalQueue(request);
-
                 FirebaseCommunicator.sendData(Queue.approvalQueue);
             }
         };
