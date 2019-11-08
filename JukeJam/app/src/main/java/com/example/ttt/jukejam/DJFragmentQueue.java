@@ -48,7 +48,7 @@ public class DJFragmentQueue extends Fragment {
 //            Thread.currentThread().interrupt();
 //        }
         Queue_ArrayAdapter.reAssignAndSortData();
-        adapter = new Queue_ArrayAdapter(getContext(), Queue.approvalQueue);
+        adapter = new Queue_ArrayAdapter(getContext(), Queue.requestList);
     }
 
 
