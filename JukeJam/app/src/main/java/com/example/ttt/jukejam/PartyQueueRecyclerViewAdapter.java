@@ -73,11 +73,11 @@ public class PartyQueueRecyclerViewAdapter extends RecyclerView.Adapter<PartyQue
                     String title = (String) titleTV.getText();
                     String artist = (String) artistTV.getText();
                     SongModel upvotedSong = Queue.findSongInQueue(title, artist, Queue.songQueue);
-                    //int i = Queue.findSongNumInQueue(title, artist, Queue.requestList);
-                    upvotedSong.upVote();
-                    //Queue.requestList.get(i).upVote();
-                    //redraw fragment
-                    FirebaseCommunicator.sendData(Queue.requestList, Queue.songQueue);
+                    if(!Queue.upVoteCheck(upvotedSong)) {
+                        upvotedSong.upVote();
+                        //Queue.upVotedSongs.add(upvotedSong);
+                        FirebaseCommunicator.sendData(Queue.requestList, Queue.songQueue);
+                    }
 
                     //notifyDataSetChanged();
                     //upvoteCountTV.setText(String.valueOf(Integer.valueOf(upvoteCountTV.getText().toString())+1));
@@ -89,11 +89,12 @@ public class PartyQueueRecyclerViewAdapter extends RecyclerView.Adapter<PartyQue
                 public void onClick(View view) {
                     String title = (String) titleTV.getText();
                     String artist = (String) artistTV.getText();
-                    SongModel downvotedSong = Queue.findSongInQueue(title, artist, Queue.requestList);
-                    downvotedSong.downVote();
-                    //redraw fragment
-                    FirebaseCommunicator.sendData(Queue.requestList, Queue.songQueue);
-                    //upvoteCountTV.setText(String.valueOf(Integer.valueOf(upvoteCountTV.getText().toString())-1));
+                    SongModel downvotedSong = Queue.findSongInQueue(title, artist, Queue.songQueue);
+                    if(!Queue.downVoteCheck(downvotedSong)) {
+                        downvotedSong.downVote();
+                        //Queue.downVotedSongs.add(downvotedSong);
+                        FirebaseCommunicator.sendData(Queue.requestList, Queue.songQueue);
+                    }
 
                 }
             });
