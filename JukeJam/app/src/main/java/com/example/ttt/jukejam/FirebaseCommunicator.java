@@ -49,8 +49,8 @@ public class FirebaseCommunicator{
                 }
                     setRoomCode(snapshot.get("joinCode").toString());
                     setRoomName(snapshot.get("roomName").toString());
-                    ArrayList<HashMap> temp = (ArrayList<HashMap>) snapshot.get("songs");
-                    Queue.approvalQueue = Queue.hashMapToQueue(temp);
+                    ArrayList<HashMap> temp = (ArrayList<HashMap>) snapshot.get("queue");
+                    Queue.songQueue = Queue.hashMapToQueue(temp);
                     if (Queue.num == 1) {
                         PartyFragment.updateData();
                     }
@@ -62,7 +62,8 @@ public class FirebaseCommunicator{
     public static void DJListener(String joinCode) {
         // [START listen_document]
         if(joinCode==null) {
-            joinCode="nojoincode";
+            roomCode="nojoincode";
+            return;
         }
         final DocumentReference docRef = db.collection("rooms").document(joinCode);
 
@@ -73,12 +74,17 @@ public class FirebaseCommunicator{
                     Log.w("DataFetch", "Listen failed.", e);
                     return;
                 }
-
+                try {
                 setRoomCode(snapshot.get("joinCode").toString());
                 setRoomName(snapshot.get("roomName").toString());
-                ArrayList<HashMap> temp= (ArrayList<HashMap>) snapshot.get("songs");
-                Queue.approvalQueue = Queue.hashMapToQueue(temp);
+                ArrayList<HashMap> temp= (ArrayList<HashMap>) snapshot.get("requestList");
+                Queue.requestList = Queue.hashMapToQueue(temp);
+                ArrayList<HashMap> temp2= (ArrayList<HashMap>) snapshot.get("queue");
+                Queue.requestList = Queue.hashMapToQueue(temp);
                 DJFragment.updateData();
+                } catch(NullPointerException n){
+                    Log.d("Null", "There as a NPE");
+                }
             }
         });
     }
@@ -104,6 +110,10 @@ public class FirebaseCommunicator{
         });
     }
 
+    public static void closeRoom() {
+        db.collection("rooms").document(""+roomCode.hashCode()).delete();
+    }
+
     public static int roomExists() {
         int retVal = _roomExists;
         _roomExists = -1;
@@ -111,8 +121,8 @@ public class FirebaseCommunicator{
         return retVal;
     }
 
-    public static void sendData(ArrayList<SongModel> tempArray){
-        Room room = new Room(roomCode, roomName, tempArray);
+    public static void sendData(ArrayList<SongModel> requestList, ArrayList<SongModel> queue){
+        Room room = new Room(roomCode, roomName, requestList, queue);
 
         //TODO fix nullpointer here
         db.collection("rooms").document(""+roomCode.hashCode()).set(room);

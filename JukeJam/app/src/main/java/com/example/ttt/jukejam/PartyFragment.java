@@ -102,7 +102,7 @@ public class PartyFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        myAdapter = new PartyQueueRecyclerViewAdapter(Queue.approvalQueue,getContext());
+        myAdapter = new PartyQueueRecyclerViewAdapter(Queue.songQueue,getContext());
         recyclerView.setAdapter(myAdapter);
         Queue.num = 1;
     }
