@@ -1,6 +1,7 @@
 package com.example.ttt.jukejam;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ public class Search_Adapter extends ArrayAdapter<SongModel> {
                 Search_Adapter.this.remove(getItem(position));
                 Queue.requestList.add(getItem(position));
                 FirebaseCommunicator.sendData(Queue.requestList, Queue.songQueue);
+                for(SongModel m : Queue.requestList) Log.v("Backend Int", ""+ m.getTitle());
             }
         };
 

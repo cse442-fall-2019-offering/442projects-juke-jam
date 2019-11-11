@@ -40,7 +40,7 @@ public class Queue_ArrayAdapter extends ArrayAdapter<SongModel> {
     }
 
     public static void reAssignAndSortData(){
-        dataset = Queue.requestList;
+        dataset = Queue.songQueue;
         Collections.sort(dataset, new SongComparator());
     }
 }

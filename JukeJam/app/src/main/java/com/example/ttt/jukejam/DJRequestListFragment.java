@@ -34,6 +34,12 @@ public class DJRequestListFragment extends Fragment {
     }
 
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        Song_Request_Adapeter.reAssignAndSortData();
+        adapter = new Song_Request_Adapeter(getContext(), Queue.requestList);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

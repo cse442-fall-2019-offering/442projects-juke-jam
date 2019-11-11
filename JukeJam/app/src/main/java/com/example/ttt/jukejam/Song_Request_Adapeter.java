@@ -2,6 +2,7 @@ package com.example.ttt.jukejam;
 
 import android.content.Context;
 import android.media.Image;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,7 @@ public class Song_Request_Adapeter extends ArrayAdapter<SongModel> {
                 //((DJActivity)getContext()).sendToSpotify(request.getUri());
                 FirebaseCommunicator.sendData(Queue.requestList, Queue.songQueue);
 
+
             }
         };
         View.OnClickListener removeSong = new View.OnClickListener(){
@@ -70,6 +72,7 @@ public class Song_Request_Adapeter extends ArrayAdapter<SongModel> {
 
     public static void reAssignAndSortData(){
         dataset = Queue.requestList;
+//        for(SongModel m : Queue.requestList) Log.v("Backend Int", "SRA: "+ m.getTitle());
         Collections.sort(dataset, new SongComparator());
     }
 }

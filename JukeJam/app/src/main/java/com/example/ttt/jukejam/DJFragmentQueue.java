@@ -33,6 +33,12 @@ public class DJFragmentQueue extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        Queue_ArrayAdapter.reAssignAndSortData();
+        adapter = new Queue_ArrayAdapter(getContext(), Queue.songQueue);
+    }
 
 
     @Override
@@ -48,7 +54,7 @@ public class DJFragmentQueue extends Fragment {
 //            Thread.currentThread().interrupt();
 //        }
         Queue_ArrayAdapter.reAssignAndSortData();
-        adapter = new Queue_ArrayAdapter(getContext(), Queue.requestList);
+        adapter = new Queue_ArrayAdapter(getContext(), Queue.songQueue);
     }
 
 
