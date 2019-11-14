@@ -34,7 +34,6 @@ public class DJFragmentQueue extends Fragment {
     }
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +46,7 @@ public class DJFragmentQueue extends Fragment {
 //        {
 //            Thread.currentThread().interrupt();
 //        }
-        Queue_ArrayAdapter.reAssignAndSortData();
-        adapter = new Queue_ArrayAdapter(getContext(), Queue.requestList);
+        adapter = new Queue_ArrayAdapter(getContext(), Queue.songQueue);
     }
 
 
@@ -59,6 +57,7 @@ public class DJFragmentQueue extends Fragment {
         View v = inflater.inflate(R.layout.dj_list_views, container, false);
         listView = v.findViewById(R.id.DJListView);
         listView.setAdapter(adapter);
+        Queue.setQueueAdapter(adapter);
 
         return v;
     }
