@@ -33,13 +33,6 @@ public class DJFragmentQueue extends Fragment {
         // Required empty public constructor
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        Queue_ArrayAdapter.reAssignAndSortData();
-        adapter = new Queue_ArrayAdapter(getContext(), Queue.songQueue);
-    }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,7 +46,6 @@ public class DJFragmentQueue extends Fragment {
 //        {
 //            Thread.currentThread().interrupt();
 //        }
-        Queue_ArrayAdapter.reAssignAndSortData();
         adapter = new Queue_ArrayAdapter(getContext(), Queue.songQueue);
     }
 
@@ -65,6 +57,7 @@ public class DJFragmentQueue extends Fragment {
         View v = inflater.inflate(R.layout.dj_list_views, container, false);
         listView = v.findViewById(R.id.DJListView);
         listView.setAdapter(adapter);
+        Queue.setQueueAdapter(adapter);
 
         return v;
     }

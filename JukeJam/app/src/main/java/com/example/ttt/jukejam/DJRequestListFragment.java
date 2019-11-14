@@ -34,12 +34,6 @@ public class DJRequestListFragment extends Fragment {
     }
 
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        Song_Request_Adapeter.reAssignAndSortData();
-        adapter = new Song_Request_Adapeter(getContext(), Queue.requestList);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,12 +43,11 @@ public class DJRequestListFragment extends Fragment {
         {
             Thread.sleep(3000);
         }
-        catch(InterruptedException ex)
-        {
+        catch(InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
-        Song_Request_Adapeter.reAssignAndSortData();
         adapter = new Song_Request_Adapeter(getContext(), Queue.requestList);
+        Queue.setRequestList(adapter);
     }
 
 
@@ -65,51 +58,9 @@ public class DJRequestListFragment extends Fragment {
         View v = inflater.inflate(R.layout.dj_list_views, container, false);
         listView = v.findViewById(R.id.DJListView);
         listView.setAdapter(adapter);
-//        String Name = getArguments().getString(ROOM_NAME);
-//        TextView roomNameTV = (TextView) v.findViewById(R.id.roomName);
-//        roomNameTV.setText(Name);
-//        setupUI(v);
-//        setupListeners();
+        Queue.setRequestList(adapter);
         return v;
     }
-//    private List<SongModel> dummyData(){
-//        List<SongModel> retVal = new ArrayList<SongModel>();
-//        SongModel s = new SongModel("Hey ya!","Outkast",null);
-//        for(int i=0;i<10;i++) s.upVote();
-//        retVal.add(s);
-//        s = new SongModel("Broken Arrows","Avicii",null);
-//        for(int i=0;i<5;i++) s.upVote();
 //
-//        retVal.add(s);
-//        s = new SongModel("All Star","Smash Mouth",null);
-//        for(int i=0;i<3;i++) s.upVote();
-//
-//        retVal.add(s);
-//        Log.d("PartyFragment", "got here: dummyData: ");
-//        return  retVal;
-//    }
-
-//    public void setupUI(View rootVeiw){
-//        searchBtn = rootVeiw.findViewById(R.id.searchButton);
-//    }
-//    public void setupListeners(){
-//        searchBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getActivity(),SearchActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//    }
-    public static void  updateData() {
-        adapter.clear();
-        ArrayList<SongModel> tempArray = new ArrayList<>(Queue.requestList);
-        Collections.sort(tempArray, new SongComparator());
-        adapter.addAll(tempArray);
-        listView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-
-
-    }
 
 }

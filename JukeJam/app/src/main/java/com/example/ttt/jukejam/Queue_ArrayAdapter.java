@@ -18,8 +18,8 @@ import androidx.annotation.Nullable;
 public class Queue_ArrayAdapter extends ArrayAdapter<SongModel> {
     private static ArrayList<SongModel> dataset;
 
-    public Queue_ArrayAdapter(Context context, ArrayList<SongModel> friends) {
-        super(context,0,dataset);
+    public Queue_ArrayAdapter(Context context, ArrayList<SongModel> queue) {
+        super(context,0,queue);
     }
 
     @NonNull
@@ -39,9 +39,12 @@ public class Queue_ArrayAdapter extends ArrayAdapter<SongModel> {
         return listItemView;
     }
 
-    public static void reAssignAndSortData(){
+    public void reAssignAndSortData(){
         dataset = Queue.songQueue;
         Collections.sort(dataset, new SongComparator());
+        clear();
+        addAll(dataset);
+        notifyDataSetChanged();
     }
 }
 
