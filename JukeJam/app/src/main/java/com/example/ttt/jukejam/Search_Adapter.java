@@ -35,8 +35,9 @@ public class Search_Adapter extends ArrayAdapter<SongModel> {
             public void onClick(View view){
                 final String tag = (String) view.getTag();
                 Toast.makeText(getContext(), request.getTitle()+" Added", Toast.LENGTH_LONG).show();
-                Search_Adapter.this.remove(getItem(position));
-                Queue.approvalQueue.add(getItem(position));
+                SongModel model = getItem(position);
+                Search_Adapter.this.remove(model);
+                Queue.approvalQueue.add(model);
                 FirebaseCommunicator.sendData(Queue.approvalQueue);
             }
         };

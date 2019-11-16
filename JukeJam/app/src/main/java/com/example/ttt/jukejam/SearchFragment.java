@@ -181,7 +181,10 @@ public class SearchFragment extends Fragment {
             public void onResponse(Response response) throws IOException {
                 if(response.isSuccessful()){
                     searchResultsString = response.body().string();
+                    searchQueryCompleted = true;
+
                     Log.d("Got here", "got here response successful");
+
 
                     //handleSearchResults(searchResultsString);
                 }
@@ -190,6 +193,8 @@ public class SearchFragment extends Fragment {
                     String searchResults = response.body().string();
                     Log.d("Search Results", searchResults);
                     searchResultsString = "";
+                    searchQueryCompleted = true;
+
                 }
                 searchQueryCompleted = true;
             }

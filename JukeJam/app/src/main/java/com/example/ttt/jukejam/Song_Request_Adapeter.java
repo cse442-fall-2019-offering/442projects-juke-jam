@@ -43,7 +43,7 @@ public class Song_Request_Adapeter extends ArrayAdapter<SongModel> {
             @Override
             public void onClick(View view){
                 final String tag = (String) view.getTag();
-                Toast.makeText(getContext(), request.getTitle()+"Added", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), request.getTitle()+" Added", Toast.LENGTH_LONG).show();
                 Song_Request_Adapeter.this.remove(getItem(position));
                 SongModel temp = Queue.findSongInQueue(request.getTitle(), request.getArtist(), Queue.approvalQueue);
                 Queue.addSongToSongQueue(temp);
