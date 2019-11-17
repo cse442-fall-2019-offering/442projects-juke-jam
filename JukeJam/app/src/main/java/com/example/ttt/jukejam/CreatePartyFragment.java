@@ -102,6 +102,9 @@ public class CreatePartyFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
+                String joinCode = partyCodeField.getText().toString();
+                String hashCode = ""+joinCode.hashCode();
+                fc.checkRoom(hashCode);
 
             }
         });
