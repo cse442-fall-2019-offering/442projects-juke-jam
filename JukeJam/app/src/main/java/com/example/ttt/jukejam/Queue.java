@@ -71,8 +71,9 @@ public class Queue {
         ArrayList<SongModel> futueQueue = new ArrayList<SongModel>();
 
         for(int i = 0; i<tempArray.size(); i++) {
-            String uri = tempArray.get(i).get("uri").toString();
-            if(uri==null){uri="";}
+            String uri;
+            try{ uri = tempArray.get(i).get("uri").toString(); }
+            catch(Exception e){ uri = ""; }
             SongModel s = new SongModel(tempArray.get(i).get("title").toString(), tempArray.get(i).get("artist").toString(), uri);
             s.setUpVotes(Integer.parseInt(tempArray.get(i).get("upVotes").toString()));
             futueQueue.add(s);
