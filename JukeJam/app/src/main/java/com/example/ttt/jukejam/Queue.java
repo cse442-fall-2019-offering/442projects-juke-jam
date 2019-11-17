@@ -1,5 +1,8 @@
 package com.example.ttt.jukejam;
 
+import android.util.Log;
+import android.widget.ArrayAdapter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,6 +17,8 @@ public class Queue {
     public static ArrayList<SongModel> requestList = new ArrayList<SongModel>(10);    //songs that require DJ approval to add to in-house queue
     public static ArrayList<SongModel> upVotedSongs = new ArrayList<SongModel>();
     public static ArrayList<SongModel> downVotedSongs = new ArrayList<SongModel>(10);
+    public static Song_Request_Adapeter request_adapeter;
+    public static Queue_ArrayAdapter queue_arrayAdapter;
 
     public Queue(){
         SongModel s = new SongModel("Hey ya!","Outkast","");
@@ -49,20 +54,26 @@ public class Queue {
     }
 
     public static void addSongToSongQueue(SongModel song){
+//        for(SongModel m : Queue.requestList) Log.v("Backend Int", ""+ m.getTitle());
         songQueue.add(song);
         requestList.remove(song);
+        queue_arrayAdapter.reAssignAndSortData();
+        request_adapeter.reAssignAndSortData();
     }
 
     public static void removeSongFromApprovalQueue(SongModel song){
         requestList.remove(song);
+        request_adapeter.reAssignAndSortData();
+        queue_arrayAdapter.reAssignAndSortData();
     }
 
     public static ArrayList<SongModel> hashMapToQueue(ArrayList<HashMap> tempArray){
         ArrayList<SongModel> futueQueue = new ArrayList<SongModel>();
 
         for(int i = 0; i<tempArray.size(); i++) {
-            String uri = tempArray.get(i).get("uri").toString();
-            if(uri==null){uri="";}
+            String uri;
+            try{ uri = tempArray.get(i).get("uri").toString(); }
+            catch(Exception e){ uri = ""; }
             SongModel s = new SongModel(tempArray.get(i).get("title").toString(), tempArray.get(i).get("artist").toString(), uri);
             s.setUpVotes(Integer.parseInt(tempArray.get(i).get("upVotes").toString()));
             futueQueue.add(s);
@@ -99,6 +110,16 @@ public class Queue {
             downVotedSongs.add(song);
             return false;
         }
+    }
+    public static void setRequestList(Song_Request_Adapeter r){
+         request_adapeter = r;
+    }
+    public static void setQueueAdapter(Queue_ArrayAdapter q){
+        queue_arrayAdapter = q;
+    }
+    public static void addSongToRequestList(SongModel s){
+        requestList.add(s);
+        request_adapeter.reAssignAndSortData();
     }
 
 
