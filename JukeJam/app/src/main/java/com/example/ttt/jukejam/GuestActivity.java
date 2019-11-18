@@ -13,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
 public class GuestActivity extends AppCompatActivity {
 
     @Override
@@ -54,6 +56,7 @@ public class GuestActivity extends AppCompatActivity {
                 return true;
             case R.id.leaveParty:
                 SPAL spal = new SPAL(this);
+                Queue.songQueue = new ArrayList<SongModel>();
                 spal.clearSharedPrefrences();
                 Intent intent = new Intent(this,MainActivity.class);
                 startActivity(intent);
