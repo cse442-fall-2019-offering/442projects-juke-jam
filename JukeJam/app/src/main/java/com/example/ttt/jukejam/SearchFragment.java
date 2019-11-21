@@ -9,6 +9,8 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -114,14 +116,14 @@ public class SearchFragment extends Fragment {
                 Log.d("SearchActivity", "SearchBtn onClick: ");
                 searchQueryCompleted=false;
                 runSearchQuery(searchET.getText().toString());
-                while(!searchQueryCompleted){
-
-                }
-                List<SongModel> searchResults = extractSearchQueryResults(searchResultsString);
-                Log.d("SearchActivity", "onClick: searchResults.size = "+searchResults.size());
-                adapter = new Search_Adapter(getContext(), (ArrayList<SongModel>)searchResults);
-                listView.setAdapter(adapter);
-                listView.invalidate();
+//                while(!searchQueryCompleted){
+//
+//                }
+//                List<SongModel> searchResults = extractSearchQueryResults(searchResultsString);
+//                Log.d("SearchActivity", "onClick: searchResults.size = "+searchResults.size());
+//                adapter = new Search_Adapter(getContext(), (ArrayList<SongModel>)searchResults);
+//                listView.setAdapter(adapter);
+//                listView.invalidate();
 
 
             }
@@ -197,6 +199,18 @@ public class SearchFragment extends Fragment {
 
                 }
                 searchQueryCompleted = true;
+                Looper.prepare();
+                new Handler(Looper.getMainLooper()).post(new Runnable() { // Tried new Handler(Looper.myLopper()) also
+                    @Override
+                    public void run() {
+                        Log.d("Handler", "got here run: ");
+                        //adapter.notifyDataSetChanged();
+                        List<SongModel> searchResults = extractSearchQueryResults(searchResultsString);
+                        adapter = new Search_Adapter(getContext(), (ArrayList<SongModel>)searchResults);
+                        listView.setAdapter(adapter);
+                        listView.invalidate();
+                    }
+                });
             }
         });
         //TESTING
