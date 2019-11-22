@@ -84,9 +84,6 @@ public class FirebaseCommunicator{
                 ArrayList<HashMap> temp2= (ArrayList<HashMap>) snapshot.get("queue");
                 Queue.songQueue = Queue.hashMapToQueue(temp2);
                 DJFragment.updateData();
-                } catch(NullPointerException n){
-                    Log.d("Null", "There as a NPE");
-                }
             }
         });
     }
