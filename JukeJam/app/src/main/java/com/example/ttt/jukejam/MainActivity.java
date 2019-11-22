@@ -1,7 +1,10 @@
 package com.example.ttt.jukejam;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,7 +63,7 @@ public class MainActivity extends FragmentActivity implements
     private Player mPlayer;
     private SpotifyAppRemote mSpotifyAppRemote;
     private static final int REQUEST_CODE = 1337;
-    private String ACCESS_TOKEN;
+    public String ACCESS_TOKEN;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Queue creation = new Queue();
@@ -92,7 +95,22 @@ public class MainActivity extends FragmentActivity implements
                 SpotifyViewModel model = ViewModelProviders.of(this).get(SpotifyViewModel.class);
 
                 Log.d("Token: ", ACCESS_TOKEN);
-                model.setToken(ACCESS_TOKEN);
+                model.getToken().postValue(ACCESS_TOKEN);
+
+                //Shared Pref test
+                SharedPreferences sharedPref = this.getSharedPreferences("Saved Token",Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString(("ACCESS_TOKEN"), ACCESS_TOKEN);
+                editor.apply();
+
+                //Content Provider test
+//                ContentResolver cr = getContentResolver();
+//                Uri uri = buildUri("content", "com.example.ttt.jukejam.provider");
+//                ContentValues cv = new ContentValues();
+//                cv.put("key","ACCESS_TOKEN");
+//                cv.put("value",ACCESS_TOKEN);
+//                cr.insert(uri,cv);
+
                 Config playerConfig = new Config(this, response.getAccessToken(), CLIENT_ID);
                 Spotify.getPlayer(playerConfig, this, new SpotifyPlayer.InitializationObserver() {
                     @Override
@@ -180,7 +198,7 @@ public class MainActivity extends FragmentActivity implements
                         Log.d("MainActivity", "Connected! Yay!");
 
                         // Now you can start interacting with App Remote
-                        connected();
+                        //connected();
 
                     }
 
@@ -205,6 +223,7 @@ public class MainActivity extends FragmentActivity implements
         OkHttpClient client = new OkHttpClient();
         String url = "https://api.spotify.com/v1/search?q=tania%20bowra&type=artist"; //-H \"Authorization: Bearer "+ACCESS_TOKEN+"\"";
         Log.d("URL", url);
+        Log.d("Connected", "Token when mAuthHeader is set: "+ACCESS_TOKEN);
         Headers mAuthHeader = Headers.of("Authorization", "Bearer " + ACCESS_TOKEN);
         Request request = new Request.Builder().get().headers(mAuthHeader).url(url).build();
         client.newCall(request).enqueue(new Callback() {
@@ -224,6 +243,7 @@ public class MainActivity extends FragmentActivity implements
                 }
                 else{
                     Log.d("Got here", "got here response NOT successful");
+                    Log.d("response not successful", "token: "+ACCESS_TOKEN);
                     String searchResults = response.body().string();
                     Log.d("Search Results", searchResults);
                 }
@@ -264,5 +284,13 @@ public class MainActivity extends FragmentActivity implements
                         Log.d("MainActivity", track.name + " by " + track.artist.name);
                     }
                 });
+    }
+
+    private Uri buildUri(String scheme, String authority) {
+        //copied from onPTestClickListener
+        Uri.Builder uriBuilder = new Uri.Builder();
+        uriBuilder.authority(authority);
+        uriBuilder.scheme(scheme);
+        return uriBuilder.build();
     }
 }
