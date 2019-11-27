@@ -27,11 +27,14 @@ public class SPAL {
         return sharedPreferences.getBoolean(activity.getString(R.string.Saved_State_Is_DJ), false);
 
     }
+    public boolean getAutoQueue(){
+        return sharedPreferences.getBoolean(activity.getString(R.string.Saved_State_Auto_Queue), false);
+    }
 
 
     public void joinRoom(){
         boolean isDJ = sharedPreferences.getBoolean(activity.getString(R.string.Saved_State_Is_DJ),false);
-        Log.d("JJDEBUGSPAL","JOINING ROOM");
+//        Log.d("JJDEBUGSPAL","JOINING ROOM");
         if(isDJ){
             Intent i = new Intent(activity, DJActivity.class);
             //true indicates they are in a room
@@ -41,17 +44,18 @@ public class SPAL {
         else{
             Intent i = new Intent(activity, GuestActivity.class);
             //true indicates they are in a room
-            Log.d("JJDEBUGSPAL","put extra");
+//            Log.d("JJDEBUGSPAL","put extra");
             i.putExtra(activity.getString(R.string.Join_Room_Extra),true);
             activity.startActivity(i);
         }
 
     }
-    public void writeSharedPrefrences(String joinCode, boolean isDJ,String roomName){
+    public void writeSharedPrefrences(String joinCode, boolean isDJ,String roomName, boolean autoQueue){
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(activity.getString(R.string.Saved_State_Join_Code), joinCode);
         editor.putString(activity.getString(R.string.Saved_State_Room), roomName);
         editor.putBoolean(activity.getString(R.string.Saved_State_Is_DJ), isDJ);
+        editor.putBoolean(activity.getString(R.string.Saved_State_Auto_Queue), autoQueue);
         editor.commit();
 
     }
