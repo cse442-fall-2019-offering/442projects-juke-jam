@@ -70,5 +70,10 @@ public class SPAL {
         bundle.putString(ROOM_NAME, sharedPreferences.getString(activity.getString(R.string.Saved_State_Room),""));
         return bundle;
     }
+    public void setAutoQueue(boolean autoQueue){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(activity.getString(R.string.Saved_State_Auto_Queue), autoQueue);
+        editor.commit();
+    }
 
 }
