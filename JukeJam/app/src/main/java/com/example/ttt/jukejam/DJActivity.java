@@ -17,6 +17,9 @@ import android.view.MenuItem;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
+import com.spotify.protocol.client.Subscription;
+import com.spotify.protocol.types.PlayerContext;
+import com.spotify.protocol.types.PlayerState;
 import com.spotify.protocol.types.Track;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
@@ -115,7 +118,54 @@ public class DJActivity extends AppCompatActivity {
                         mSpotifyAppRemote = spotifyAppRemote;
                         Log.d("MainActivity", "Connected! Yay!");
 
-                        // Now you can start interacting with App Remote
+                        // TODO: this is where we wil
+                        int qLength;
+
+                        final Player player;
+                        mSpotifyAppRemote.getPlayerApi().subscribeToPlayerContext().setEventCallback(new Subscription.EventCallback<PlayerContext>() {
+                            @Override
+                            public void onEvent(PlayerContext playerContext) {
+                                Log.d("Context Event", "onEvent: "+playerContext.subtitle);
+                                if(Queue.songQueue.size()>0){
+                                    SongModel cur = Queue.songQueue.get(0);
+                                    sendToSpotify(cur.getUri());
+                                    Queue.songQueue.remove(cur);
+                                }
+
+                            }
+                        });
+                        mSpotifyAppRemote.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
+                                    final Track track = playerState.track;
+                                    if (track != null) {
+                                        Log.d("MainActivity", track.name + " by " + track.artist.name);
+
+                                    }
+
+                                });
+
+//                        cur = Queue.songQueue.get(0);
+//                        next = Queue.songQueue.get(1);
+                        //sendToSpotify(Queue.getUri());
+//                        while(true){
+//                            //qLength = Queue.songQueue.size();
+
+//                            final SongModel cur = Queue.songQueue.get(0);
+//                            final SongModel next = Queue.songQueue.get(1);
+//                            sendToSpotify(cur.getUri());
+//                            mSpotifyAppRemote.getPlayerApi().getPlayerState().setResultCallback(playerState -> {
+//                                final Track track = playerState.track;
+//                                while(track.equals(cur)){
+//
+//                                }
+//                                Queue.songQueue.remove(cur);
+//                            });
+//                            try{
+//                                Thread.sleep(1000);
+//                            }
+//                            catch (Exception e){
+//
+//                            }
+//                        }
 
                     }
 

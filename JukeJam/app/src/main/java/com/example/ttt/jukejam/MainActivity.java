@@ -117,7 +117,23 @@ public class MainActivity extends FragmentActivity implements
                     public void onInitialized(SpotifyPlayer spotifyPlayer) {
                         mPlayer = spotifyPlayer;
                         mPlayer.addConnectionStateCallback(MainActivity.this);
-                        mPlayer.addNotificationCallback(MainActivity.this);
+                        //mPlayer.addNotificationCallback(MainActivity.this);
+                        Player.NotificationCallback spotifyPlayerNotificationCallback = new Player.NotificationCallback() {
+                            @Override
+                            public void onPlaybackEvent(PlayerEvent playerEvent) {
+                                Log.d("Spotify", "Spotify player notif callback: playback event: " + playerEvent.name());
+                                handleSpotifyEvent(playerEvent);
+                            }
+
+                            @Override
+                            public void onPlaybackError(Error error) {
+                                Log.d("Spotify", "Spotify player notif callback: playback error: " + error.name());
+                                //handleSpotifyError(error);
+                            }
+                        };
+                        Log.d("Main Activity", "onInitialized: got here 1");
+                        mPlayer.addNotificationCallback(spotifyPlayerNotificationCallback);
+                        Log.d("Main Activity", "onInitialized: got here 2");
 
                     }
 
@@ -292,5 +308,53 @@ public class MainActivity extends FragmentActivity implements
         uriBuilder.authority(authority);
         uriBuilder.scheme(scheme);
         return uriBuilder.build();
+    }
+
+    private void handleSpotifyEvent(final PlayerEvent playerEvent) {
+        Log.d("Spotify", "Spotify playerEvent:" + playerEvent.name());
+
+        switch (playerEvent) {
+
+            case kSpPlaybackEventAudioFlush:
+                break;
+            case kSpPlaybackNotifyAudioDeliveryDone:
+                break;
+            case kSpPlaybackNotifyBecameActive:
+                break;
+            case kSpPlaybackNotifyBecameInactive:
+                break;
+            case kSpPlaybackNotifyContextChanged:
+                break;
+            case kSpPlaybackNotifyLostPermission:
+                break;
+            case kSpPlaybackNotifyMetadataChanged:
+                break;
+            case kSpPlaybackNotifyNext:
+                break;
+            case kSpPlaybackNotifyPause:
+                break;
+            case kSpPlaybackNotifyPlay:
+                // TODO get current playing track here?
+                //labelNowPlaying.setText(spotifyPlayer.getMetadata().currentTrack.
+                break;
+            case kSpPlaybackNotifyPrev:
+                break;
+            case kSpPlaybackNotifyRepeatOff:
+                break;
+            case kSpPlaybackNotifyRepeatOn:
+                break;
+            case kSpPlaybackNotifyShuffleOff:
+                break;
+            case kSpPlaybackNotifyShuffleOn:
+                break;
+            case kSpPlaybackNotifyTrackChanged:
+                //TODO send next
+                break;
+            case kSpPlaybackNotifyTrackDelivered:
+                break;
+
+            default:
+                break;
+        }
     }
 }
