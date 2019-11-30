@@ -47,7 +47,7 @@ public class DJRequestListFragment extends Fragment {
             Thread.currentThread().interrupt();
         }
         adapter = new Song_Request_Adapeter(getContext(), Queue.requestList);
-        Queue.setRequestList(adapter);
+        Queue.setRequestListAdapter(adapter);
     }
 
 
@@ -58,7 +58,7 @@ public class DJRequestListFragment extends Fragment {
         View v = inflater.inflate(R.layout.dj_list_views, container, false);
         listView = v.findViewById(R.id.DJListView);
         listView.setAdapter(adapter);
-        Queue.setRequestList(adapter);
+        Queue.setRequestListAdapter(adapter);
         return v;
     }
 //

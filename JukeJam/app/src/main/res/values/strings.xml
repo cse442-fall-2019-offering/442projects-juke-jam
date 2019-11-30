@@ -8,4 +8,5 @@
     <string name= "Saved_State_Join_Code">Saved State Join Code</string>
     <string name= "Saved_State_Is_DJ">Saved State Is DJ</string>
     <string name="Join_Room_Extra">Join Room Extra</string>
+    <string name="Saved_State_Auto_Queue">Save State Auto Queue</string>
 </resources>

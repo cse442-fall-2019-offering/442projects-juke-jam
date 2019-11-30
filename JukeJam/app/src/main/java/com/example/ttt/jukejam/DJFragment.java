@@ -18,8 +18,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
@@ -44,6 +46,7 @@ public class DJFragment extends Fragment {
     private ViewPager mViewPager;
     private ListView listView;
     private ImageButton searchBtn;
+    private Switch autoQueueSwitch;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -83,7 +86,13 @@ public class DJFragment extends Fragment {
 //        listView.setAdapter(adapter);
         String Name = getArguments().getString(ROOM_NAME);
         TextView roomNameTV = (TextView) v.findViewById(R.id.roomName);
-
+        autoQueueSwitch = v.findViewById(R.id.autoQueueSwitch);
+        SPAL spal = new SPAL(getActivity());
+        autoQueueSwitch.setChecked(spal.getAutoQueue());
+        autoQueueSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+            spal.setAutoQueue(b);
+            Queue.setAutoQueue(b);
+        });
         mAdapter = new MyAdapter(getFragmentManager());
         mViewPager =  v.findViewById(R.id.DJViewPager);
         mViewPager.setAdapter(mAdapter);

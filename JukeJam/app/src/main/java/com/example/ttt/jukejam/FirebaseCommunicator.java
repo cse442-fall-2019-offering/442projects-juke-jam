@@ -49,8 +49,10 @@ public class FirebaseCommunicator{
                 }
                     setRoomCode(snapshot.get("joinCode").toString());
                     setRoomName(snapshot.get("roomName").toString());
-                    ArrayList<HashMap> temp = (ArrayList<HashMap>) snapshot.get("queue");
-                    Queue.songQueue = Queue.hashMapToQueue(temp);
+                    ArrayList<HashMap> temp= (ArrayList<HashMap>) snapshot.get("requestList");
+                    Queue.setRequestList(temp);
+                    ArrayList<HashMap> temp2= (ArrayList<HashMap>) snapshot.get("queue");
+                    Queue.setSongQueue(temp2);
                     if (Queue.num == 1) {
                         PartyFragment.updateData();
                     }
@@ -77,12 +79,13 @@ public class FirebaseCommunicator{
                 if(snapshot.get("joinCode")==null){
                     return;
                 }
+                Log.v("listner", "onEvent");
                 setRoomCode(snapshot.get("joinCode").toString());
                 setRoomName(snapshot.get("roomName").toString());
                 ArrayList<HashMap> temp= (ArrayList<HashMap>) snapshot.get("requestList");
-                Queue.requestList = Queue.hashMapToQueue(temp);
+                Queue.setRequestList(temp);
                 ArrayList<HashMap> temp2= (ArrayList<HashMap>) snapshot.get("queue");
-                Queue.songQueue = Queue.hashMapToQueue(temp2);
+                Queue.setSongQueue(temp2);
                 DJFragment.updateData();
             }
         });
@@ -122,7 +125,8 @@ public class FirebaseCommunicator{
 
     public static void sendData(ArrayList<SongModel> requestList, ArrayList<SongModel> queue){
         Room room = new Room(roomCode, roomName, requestList, queue);
-
+        for(SongModel m : requestList) Log.v("sendDataRL", ""+ m.getTitle());
+        for(SongModel m : queue) Log.v("sendDataQ", ""+ m.getTitle());
         //TODO fix nullpointer here
         db.collection("rooms").document(""+roomCode.hashCode()).set(room);
     }

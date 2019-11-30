@@ -127,7 +127,7 @@ public class JoinPartyFragment extends Fragment {
                     ft.commit();
                     EditText partyCodeET = getActivity().findViewById(R.id.partyName);
                     SPAL spal = new SPAL(getActivity());
-                    spal.writeSharedPrefrences(partyCodeET.getText().toString(), false, "");
+                    spal.writeSharedPrefrences(partyCodeET.getText().toString(), false, "", false);
                 }
                 else{
                     Toast t = Toast.makeText(getContext(), "Please enter a valid join code", Toast.LENGTH_LONG);

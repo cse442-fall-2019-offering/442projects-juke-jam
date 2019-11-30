@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Space;
@@ -116,6 +117,7 @@ public class CreatePartyFragment extends Fragment {
                     DAL dal = new DAL();
                     EditText partyNameET = getActivity().findViewById(R.id.partyName);
                     EditText partyCodeET = getActivity().findViewById(R.id.partyCodeField);
+                    CheckBox approveSongsCB = getActivity().findViewById(R.id.approveSongCheckBox);
                     dal.createRoom(partyNameET.getText().toString(),partyCodeET.getText().toString());
                     Bundle b = new Bundle();
                     b.putString(ROOM_NAME,partyNameET.getText().toString());
@@ -125,7 +127,8 @@ public class CreatePartyFragment extends Fragment {
                     ft.replace(R.id.fragment_container_dj, djFrag);
                     ft.commit();
                     SPAL spal = new SPAL(getActivity());
-                    spal.writeSharedPrefrences(partyCodeET.getText().toString(),true,partyNameET.getText().toString());
+                    spal.writeSharedPrefrences(partyCodeET.getText().toString(),true,partyNameET.getText().toString(),!approveSongsCB.isChecked());
+                    Queue.setAutoQueue(!approveSongsCB.isChecked());
                 }
                 else{
                     Toast t = Toast.makeText(getContext(), "Join code already in use. Please try another.", Toast.LENGTH_LONG);
