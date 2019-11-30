@@ -16,8 +16,8 @@
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="350dp"
-            android:layout_height="336dp"
+            android:layout_width="396dp"
+            android:layout_height="365dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
@@ -27,13 +27,14 @@
             android:src="@drawable/logo_render"
             app:layout_constraintBottom_toTopOf="@+id/createPartyBtn"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.325" />
+            app:layout_constraintVertical_bias="0.493" />
 
         <Button
             android:id="@+id/createPartyBtn"
-            android:layout_width="265dp"
+            android:layout_width="300dp"
             android:layout_height="70dp"
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
@@ -41,7 +42,9 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="20dp"
+            android:background="@drawable/buttonshape"
             android:text="Create a Party"
+            android:textSize="15sp"
             app:layout_constraintBottom_toTopOf="@+id/joinPartyBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.504"
@@ -49,7 +52,7 @@
 
         <Button
             android:id="@+id/joinPartyBtn"
-            android:layout_width="265dp"
+            android:layout_width="300dp"
             android:layout_height="70dp"
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
@@ -57,7 +60,9 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="32dp"
+            android:background="@drawable/buttonshape"
             android:text="Join a Party"
+            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.504"
