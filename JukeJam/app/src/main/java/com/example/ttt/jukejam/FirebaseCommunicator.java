@@ -85,7 +85,6 @@ public class FirebaseCommunicator{
                 ArrayList<HashMap> temp= (ArrayList<HashMap>) snapshot.get("requestList");
                 Queue.setRequestList(temp);
                 ArrayList<HashMap> temp2= (ArrayList<HashMap>) snapshot.get("queue");
-                Log.v("joiner","queue updated");
                 Queue.setSongQueue(temp2);
                 DJFragment.updateData();
             }
@@ -126,7 +125,8 @@ public class FirebaseCommunicator{
 
     public static void sendData(ArrayList<SongModel> requestList, ArrayList<SongModel> queue){
         Room room = new Room(roomCode, roomName, requestList, queue);
-
+        for(SongModel m : requestList) Log.v("sendDataRL", ""+ m.getTitle());
+        for(SongModel m : queue) Log.v("sendDataQ", ""+ m.getTitle());
         //TODO fix nullpointer here
         db.collection("rooms").document(""+roomCode.hashCode()).set(room);
     }

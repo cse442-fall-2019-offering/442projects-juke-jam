@@ -70,7 +70,7 @@ public class Song_Request_Adapeter extends ArrayAdapter<SongModel> {
 
     public void reAssignAndSortData(){
         dataset = Queue.requestList;
-        for(SongModel m : dataset) Log.v("Backend Int", "SRA: "+ m.getTitle());
+//        for(SongModel m : dataset) Log.v("Backend Int", "SRA: "+ m.getTitle());
         Collections.sort(dataset, new SongComparator());
         clear();
         addAll(dataset);

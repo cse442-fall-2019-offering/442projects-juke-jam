@@ -120,6 +120,7 @@ public class Queue {
     public static void addSongToRequestList(SongModel s){
         requestList.add(s);
         updateViews();
+
         if (autoQueue) approveAll();
     }
     public static void setAutoQueue(boolean aQ){
@@ -128,17 +129,22 @@ public class Queue {
     }
     private static void approveAll(){
         songQueue.addAll(requestList);
+        Log.v("approveAllRL", ""+requestList);
+        Log.v("approveAllQ", ""+songQueue);
         requestList.clear();
         FirebaseCommunicator.sendData(requestList,songQueue);
+//        for(SongModel m : requestList) Log.v("approve all", ""+ m.getTitle());
         updateViews();
     }
     public static void setSongQueue(ArrayList<HashMap> songQ){
         songQueue = hashMapToQueue(songQ);
+        Log.v("setSongQ", "here");
         updateViews();
     }
     public static void setRequestList(ArrayList<HashMap> requestL){
         requestList = hashMapToQueue(requestL);
-        if (autoQueue) approveAll();
+        Log.v("setRequestList", "here");
+        if (autoQueue && !requestL.isEmpty()) approveAll();
     }
     private static void updateViews(){
         if (request_adapeter != null)request_adapeter.reAssignAndSortData();
