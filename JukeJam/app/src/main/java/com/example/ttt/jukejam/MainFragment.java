@@ -2,7 +2,10 @@ package com.example.ttt.jukejam;
 
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -61,8 +64,6 @@ public class MainFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
     }
 
     @Override
@@ -78,6 +79,12 @@ public class MainFragment extends Fragment {
     public void setupUI(View rootView){
         createPartyBtn = rootView.findViewById(R.id.createPartyBtn);
         joinPartyBtn = rootView.findViewById(R.id.joinPartyBtn);
+        //animated background
+        ConstraintLayout constraintLayout = rootView.findViewById(R.id.mainlayout);
+        AnimationDrawable aniDraw = (AnimationDrawable) constraintLayout.getBackground();
+        aniDraw.setEnterFadeDuration(2000);
+        aniDraw.setExitFadeDuration(4000);
+        aniDraw.start();
     }
 
     public void setupListeners(){
