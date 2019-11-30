@@ -19,6 +19,7 @@ public class Queue {
     public static ArrayList<SongModel> downVotedSongs = new ArrayList<SongModel>(10);
     public static Song_Request_Adapeter request_adapeter;
     public static Queue_ArrayAdapter queue_arrayAdapter;
+    private static boolean autoQueue = false;
 
     public Queue(){
         SongModel s = new SongModel("Hey ya!","Outkast","");
@@ -57,14 +58,12 @@ public class Queue {
 //        for(SongModel m : Queue.requestList) Log.v("Backend Int", ""+ m.getTitle());
         songQueue.add(song);
         requestList.remove(song);
-        queue_arrayAdapter.reAssignAndSortData();
-        request_adapeter.reAssignAndSortData();
+        updateViews();
     }
 
     public static void removeSongFromApprovalQueue(SongModel song){
         requestList.remove(song);
-        request_adapeter.reAssignAndSortData();
-        queue_arrayAdapter.reAssignAndSortData();
+        updateViews();
     }
 
     public static ArrayList<SongModel> hashMapToQueue(ArrayList<HashMap> tempArray){
@@ -111,15 +110,39 @@ public class Queue {
             return false;
         }
     }
-    public static void setRequestList(Song_Request_Adapeter r){
+    public static void setRequestListAdapter(Song_Request_Adapeter r){
          request_adapeter = r;
     }
     public static void setQueueAdapter(Queue_ArrayAdapter q){
         queue_arrayAdapter = q;
     }
+
     public static void addSongToRequestList(SongModel s){
         requestList.add(s);
-        request_adapeter.reAssignAndSortData();
+        updateViews();
+        if (autoQueue) approveAll();
+    }
+    public static void setAutoQueue(boolean aQ){
+        autoQueue = aQ;
+        if(aQ) approveAll();
+    }
+    private static void approveAll(){
+        songQueue.addAll(requestList);
+        requestList.clear();
+        FirebaseCommunicator.sendData(requestList,songQueue);
+        updateViews();
+    }
+    public static void setSongQueue(ArrayList<HashMap> songQ){
+        songQueue = hashMapToQueue(songQ);
+        updateViews();
+    }
+    public static void setRequestList(ArrayList<HashMap> requestL){
+        requestList = hashMapToQueue(requestL);
+        if (autoQueue) approveAll();
+    }
+    private static void updateViews(){
+        if (request_adapeter != null)request_adapeter.reAssignAndSortData();
+        if (queue_arrayAdapter != null)queue_arrayAdapter.reAssignAndSortData();
     }
 
 

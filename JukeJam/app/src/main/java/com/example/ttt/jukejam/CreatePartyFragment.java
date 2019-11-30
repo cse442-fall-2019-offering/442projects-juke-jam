@@ -128,6 +128,7 @@ public class CreatePartyFragment extends Fragment {
                     ft.commit();
                     SPAL spal = new SPAL(getActivity());
                     spal.writeSharedPrefrences(partyCodeET.getText().toString(),true,partyNameET.getText().toString(),!approveSongsCB.isChecked());
+                    Queue.setAutoQueue(!approveSongsCB.isChecked());
                 }
                 else{
                     Toast t = Toast.makeText(getContext(), "Join code already in use. Please try another.", Toast.LENGTH_LONG);

@@ -89,7 +89,10 @@ public class DJFragment extends Fragment {
         autoQueueSwitch = v.findViewById(R.id.autoQueueSwitch);
         SPAL spal = new SPAL(getActivity());
         autoQueueSwitch.setChecked(spal.getAutoQueue());
-        autoQueueSwitch.setOnCheckedChangeListener((compoundButton, b) -> spal.setAutoQueue(b));
+        autoQueueSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+            spal.setAutoQueue(b);
+            Queue.setAutoQueue(b);
+        });
         mAdapter = new MyAdapter(getFragmentManager());
         mViewPager =  v.findViewById(R.id.DJViewPager);
         mViewPager.setAdapter(mAdapter);
