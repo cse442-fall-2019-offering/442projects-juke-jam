@@ -62,10 +62,47 @@ public class PartyQueueRecyclerViewAdapter extends RecyclerView.Adapter<PartyQue
             upvoteBtn = itemView.findViewById(R.id.upvoteBtn);
             downvoteBtn = itemView.findViewById(R.id.downvoteBtn);
             upvoteCountTV = itemView.findViewById(R.id.upvoteCountTV);
+
+            upvoteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String title = (String) titleTV.getText();
+                    String artist = (String) artistTV.getText();
+                    SongModel upvotedSong = Queue.findSongInQueue(title, artist, Queue.songQueue);
+                    if(!Queue.upVoteCheck(upvotedSong)) {
+                        upvotedSong.upVote();
+                        //Queue.upVotedSongs.add(upvotedSong);
+                        FirebaseCommunicator.sendData(Queue.requestList, Queue.songQueue);
+                    }
+
+                    //notifyDataSetChanged();
+                    //upvoteCountTV.setText(String.valueOf(Integer.valueOf(upvoteCountTV.getText().toString())+1));
+                }
+            });
+
+            downvoteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String title = (String) titleTV.getText();
+                    String artist = (String) artistTV.getText();
+                    SongModel downvotedSong = Queue.findSongInQueue(title, artist, Queue.songQueue);
+                    if(!Queue.downVoteCheck(downvotedSong)) {
+                        downvotedSong.downVote();
+                        //Queue.downVotedSongs.add(downvotedSong);
+                        FirebaseCommunicator.sendData(Queue.requestList, Queue.songQueue);
+                    }
+
+                }
+            });
         }
     }
 
     public interface OnItemClicked{
         void onItemClick(SongModel model);
+    }
+
+    public static void reAssignAndSortData(){
+        dataset = Queue.songQueue;
+        Collections.sort(dataset, new SongComparator());
     }
 }

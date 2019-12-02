@@ -5,10 +5,18 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.Space;
+import android.widget.Toast;
 
 
 /**
@@ -23,9 +31,10 @@ public class CreatePartyFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
+    private FirebaseCommunicator fc = new FirebaseCommunicator();
     private String mParam1;
     private String mParam2;
-
+    private EditText partyCodeField;
     private Button jamBtn;
 
     public CreatePartyFragment() {
@@ -70,17 +79,59 @@ public class CreatePartyFragment extends Fragment {
     }
 
     public void setupUI(View rootView){
+        partyCodeField = rootView.findViewById(R.id.partyCodeField);
         jamBtn = rootView.findViewById(R.id.jamBtn);
     }
 
     public void setupListeners(){
+        partyCodeField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String joinCode = partyCodeField.getText().toString();
+                String hashCode = ""+joinCode.hashCode();
+                fc.checkRoom(hashCode);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String joinCode = partyCodeField.getText().toString();
+                String hashCode = ""+joinCode.hashCode();
+                fc.checkRoom(hashCode);
+
+            }
+        });
         jamBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DJFragment djFrag = new DJFragment();
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_container_dj, djFrag);
-                ft.commit();
+                if(fc.roomExists() == 0){
+                    DJFragment djFrag = new DJFragment();
+                    DAL dal = new DAL();
+                    EditText partyNameET = getActivity().findViewById(R.id.partyName);
+                    EditText partyCodeET = getActivity().findViewById(R.id.partyCodeField);
+                    CheckBox approveSongsCB = getActivity().findViewById(R.id.approveSongCheckBox);
+                    dal.createRoom(partyNameET.getText().toString(),partyCodeET.getText().toString());
+                    Bundle b = new Bundle();
+                    b.putString(ROOM_NAME,partyNameET.getText().toString());
+                    b.putString(JOIN_CODE, partyCodeET.getText().toString());
+                    djFrag.setArguments(b);
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_container_dj, djFrag);
+                    ft.commit();
+                    SPAL spal = new SPAL(getActivity());
+                    spal.writeSharedPrefrences(partyCodeET.getText().toString(),true,partyNameET.getText().toString(),!approveSongsCB.isChecked());
+                    Queue.setAutoQueue(!approveSongsCB.isChecked());
+                }
+                else{
+                    Toast t = Toast.makeText(getContext(), "Join code already in use. Please try another.", Toast.LENGTH_LONG);
+                    t.setGravity(Gravity.BOTTOM|Gravity.CENTER, 0, 0);
+                    t.show();
+                }
+
             }
         });
     }

@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
 public class GuestActivity extends AppCompatActivity {
 
     @Override
@@ -28,6 +30,13 @@ public class GuestActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                return true;
+            case R.id.leaveParty:
+                SPAL spal = new SPAL(this);
+                Queue.songQueue = new ArrayList<SongModel>();
+                spal.clearSharedPrefrences();
+                Intent intent = new Intent(this,MainActivity.class);
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);

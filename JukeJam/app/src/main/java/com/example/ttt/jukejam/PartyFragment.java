@@ -1,6 +1,7 @@
 package com.example.ttt.jukejam;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,7 +45,7 @@ public class PartyFragment extends Fragment {
     private RecyclerView recyclerView;
     private SearchView searchView;
     private Button searchBtn;
-    private TextView partyNameTV;
+    private static TextView partyNameTV;
 
     private List<SongModel> myDataset;
     private RecyclerView.Adapter myAdapter;
@@ -92,15 +94,15 @@ public class PartyFragment extends Fragment {
     public void setupUI(View rootView){
         recyclerView = rootView.findViewById(R.id.recyclerView);
         partyNameTV = rootView.findViewById(R.id.partyNameTV);
+        partyNameTV.setText(FirebaseCommunicator.roomName);
         searchView = rootView.findViewById(R.id.searchView);
         searchBtn = rootView.findViewById((R.id.searchBtn));
 
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        myDataset = dummyData();
-        Log.d("PartyFragment", "setupUI: myDataset size = "+myDataset.size());
-        myAdapter = new PartyQueueRecyclerViewAdapter(myDataset,getContext());
+
+        myAdapter = new PartyQueueRecyclerViewAdapter(Queue.songQueue,getContext());
         recyclerView.setAdapter(myAdapter);
     }
 
@@ -131,4 +133,13 @@ public class PartyFragment extends Fragment {
         });
     }
 
+    public static void  updateData() {
+        partyNameTV.setText(FirebaseCommunicator.roomName);
+        PartyQueueRecyclerViewAdapter.reAssignAndSortData();
+        myAdapter.notifyDataSetChanged();
+    }
+
+    public static void partyEnded(){
+        partyNameTV.setText("Party ended, please leave.");
+    }
 }

@@ -72,13 +72,47 @@ public class JoinPartyFragment extends Fragment {
         joinRoomBtn = rootView.findViewById(R.id.joinRoomBtn);
     }
     public void setupListeners(){
+        partyName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String joinCode = partyName.getText().toString();
+                String hashCode = ""+joinCode.hashCode();
+                fc.checkRoom(hashCode);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String joinCode = partyName.getText().toString();
+                String hashCode = ""+joinCode.hashCode();
+                fc.checkRoom(hashCode);
+            }
+        });
         joinRoomBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PartyFragment partyFrag = new PartyFragment();
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_container_guest, partyFrag);
-                ft.commit();
+                EditText partyCode = getActivity().findViewById(R.id.partyName);
+                String joinCode = partyCode.getText().toString();
+                String hashCode = ""+joinCode.hashCode();
+                if(fc.roomExists() > 0){
+                    fc.listenToDocument("" + hashCode);
+                    PartyFragment partyFrag = new PartyFragment();
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_container_guest, partyFrag);
+                    ft.commit();
+                    EditText partyCodeET = getActivity().findViewById(R.id.partyName);
+                    SPAL spal = new SPAL(getActivity());
+                    spal.writeSharedPrefrences(partyCodeET.getText().toString(), false, "", false);
+                }
+                else{
+                    Toast t = Toast.makeText(getContext(), "Please enter a valid join code", Toast.LENGTH_LONG);
+                    t.setGravity(Gravity.TOP|Gravity.CENTER, 0, 200);
+                    t.show();
+                }
             }
         });
     }

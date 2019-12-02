@@ -3,4 +3,10 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name= "Saved_State_Values">Saved State Values</string>
+    <string name= "Saved_State_Room">Saved State Room</string>
+    <string name= "Saved_State_Join_Code">Saved State Join Code</string>
+    <string name= "Saved_State_Is_DJ">Saved State Is DJ</string>
+    <string name="Join_Room_Extra">Join Room Extra</string>
+    <string name="Saved_State_Auto_Queue">Save State Auto Queue</string>
 </resources>

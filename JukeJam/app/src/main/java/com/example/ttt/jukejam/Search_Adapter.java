@@ -1,6 +1,7 @@
 package com.example.ttt.jukejam;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +35,10 @@ public class Search_Adapter extends ArrayAdapter<SongModel> {
             @Override
             public void onClick(View view){
                 final String tag = (String) view.getTag();
-                Toast.makeText(getContext(), request.getTitle()+"Added", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), request.getTitle()+" Added", Toast.LENGTH_LONG).show();
+                Queue.addSongToRequestList(getItem(position));
                 Search_Adapter.this.remove(getItem(position));
+                FirebaseCommunicator.sendData(Queue.requestList, Queue.songQueue);
             }
         };
 
