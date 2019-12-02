@@ -11,6 +11,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,8 +23,8 @@ import java.util.HashMap;
 
 public class FirebaseCommunicator{
     static FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private static String roomName;
-    private static String roomCode;
+    public static String roomName;
+    public static String roomCode;
     public static int _roomExists;
 
     public FirebaseCommunicator(){
@@ -45,6 +46,15 @@ public class FirebaseCommunicator{
                                 @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
                     Log.w("DataFetch", "Listen failed.", e);
+                    return;
+                }
+                if(snapshot.get("joinCode") == null){
+                    //party was destroyed by DJ
+                    roomCode = "";
+                    roomName = "";
+                    Queue.songQueue.clear();
+                    Queue.requestList.clear();
+                    PartyFragment.partyEnded();
                     return;
                 }
                     setRoomCode(snapshot.get("joinCode").toString());
